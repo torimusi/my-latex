@@ -1,0 +1,60 @@
+%--------------------------------------------------
+% 基本変更不要
+%--------------------------------------------------
+
+%--------------------------------------------------
+% ページスタイル
+\pagestyle{empty}
+
+%--------------------------------------------------
+% ページのレイアウト
+\topmargin=-3cm
+\headheight=0cm
+\headsep=3cm
+\textwidth=45zw
+\textheight=70zw
+\marginparsep=0cm
+\marginparwidth=0cm
+\footskip=-2.57cm
+
+% Bodyを左右中央揃え
+\oddsidemargin=\paperwidth
+\advance\oddsidemargin by -\textwidth
+\divide\oddsidemargin by 2
+\advance\oddsidemargin by -\hoffset
+\advance\oddsidemargin by -1in
+
+%--------------------------------------------------
+% 見出し{発表会名}
+\newcommand{\makeheading}[1]{
+
+  \begin{picture}(410,1)
+    \thicklines
+    \put(-5,0){\line(1,0){410}}
+  \end{picture}
+
+  \begin{center}
+    \large ネットワーク情報システム研究室\\
+    \huge {#1}\\
+    \vspace{0.1cm}
+    \LARGE 目次\\
+  \end{center}
+
+  \vspace{-0.3cm}
+
+  \begin{picture}(410,1)
+    \thicklines
+    \put(-5,0){\line(1,0){410}}
+  \end{picture}
+
+}
+
+%--------------------------------------------------
+% 項目{タイトル}{著者}{ページ番号}
+\newcommand{\content}[3]{
+  \item {\large {#1}}
+  \item \rightline{{#2} . . . {#3}}
+  \vspace{1mm}
+}
+
+%--------------------------------------------------
