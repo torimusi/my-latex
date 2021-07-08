@@ -3,6 +3,10 @@
 %--------------------------------------------------
 
 %--------------------------------------------------
+% パッケージのインクルード
+\usepackage[dvipdfmx]{graphicx}
+
+%--------------------------------------------------
 % ページスタイル
 \pagestyle{empty}
 
@@ -23,6 +27,35 @@
 \divide\oddsidemargin by 2
 \advance\oddsidemargin by -\hoffset
 \advance\oddsidemargin by -1in
+
+%--------------------------------------------------
+% 日付
+\newcommand{\symposiumdate}[4]{
+  \large \rightline{No.{#1}  {#2} / {#3} / {#4}}
+}
+
+%--------------------------------------------------
+% タイトル
+\newcommand{\symposiumtitle}[2]{
+  \centering
+  \huge {#1}\\
+  \LARGE {#2}\\
+}
+
+%--------------------------------------------------
+% 出版元(研究室名)
+\newcommand{\publisher}{
+  \begin{center}
+    \large
+    同志社大学理工学部情報システムデザイン学科\\
+    同志社大学理工学部研究科情報工学専攻\\
+    \vskip\baselineskip
+    ネットワーク情報システム研究室
+  \end{center}
+  \begin{center}
+    \normalsize Published by the Network Information Systems Laboratory of                   Doshisha University
+  \end{center}
+}
 
 %--------------------------------------------------
 % 見出し{発表会名}
