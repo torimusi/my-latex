@@ -5,6 +5,7 @@
 %--------------------------------------------------
 % パッケージのインクルード
 \usepackage[dvipdfmx]{graphicx}
+\usepackage{txfonts}
 
 %--------------------------------------------------
 % ページスタイル
@@ -16,7 +17,7 @@
 \headheight=0cm
 \headsep=0cm
 \textwidth=45zw
-\textheight=70zw
+\textheight=80zw
 \marginparsep=0cm
 \marginparwidth=0cm
 \footskip=0cm
@@ -31,15 +32,27 @@
 %--------------------------------------------------
 % 日付
 \newcommand{\symposiumdate}[4]{
-  \large \rightline{No.{#1}  {#2} / {#3} / {#4}}
+  \hspace{3zw}
+  \Large \rightline{No.{#1}\quad{#2} / {#3} / {#4}}
 }
 
 %--------------------------------------------------
 % タイトル
 \newcommand{\symposiumtitle}[2]{
   \centering
-  \huge {#1}\\
+  \vrule width 14cm height 0.1cm\\
+  \vspace{-0.6cm}
+  \vrule width 13.5cm height 0.02cm\\
+  \vspace{0.6cm}
+  {\fontsize{36pt}{0pt}\selectfont
+  {#1}\\
+  }
+  \vspace{0.5cm}
   \LARGE {#2}\\
+  \vrule width 13.5cm height 0.02cm\\
+  \vspace{-0.65cm}
+  \vrule width 14cm height 0.1cm\\
+
 }
 
 %--------------------------------------------------
@@ -51,9 +64,10 @@
     同志社大学理工学部研究科情報工学専攻\\
     \vskip\baselineskip
     ネットワーク情報システム研究室
-  \end{center}
-  \begin{center}
-    \normalsize Published by the Network Information Systems Laboratory of                   Doshisha University
+    \vspace{1cm}
+    \vrule width 14cm height 0.08cm
+    \vspace{0.2cm}
+    \large Published by the Network Information Systems Laboratory of                   Doshisha University
   \end{center}
 }
 
@@ -61,24 +75,15 @@
 % 見出し{発表会名}
 \newcommand{\makeheading}[1]{
 
-  \begin{picture}(410,1)
-    \thicklines
-    \put(-5,0){\line(1,0){410}}
-  \end{picture}
-
-  \begin{center}
-    \large ネットワーク情報システム研究室\\
-    \huge {#1}\\
-    \vspace{0.1cm}
-    \LARGE 目次\\
-  \end{center}
-
-  \vspace{-0.3cm}
-
-  \begin{picture}(410,1)
-    \thicklines
-    \put(-5,0){\line(1,0){410}}
-  \end{picture}
+  \centering
+  \vrule width 14cm height 0.02cm\\
+  \vspace{0.3cm}
+  \large ネットワーク情報システム研究室\\
+  \huge {#1}\\
+  \vspace{0.1cm}
+  \LARGE 目次\\
+  \vspace{-0.2cm}
+  \vrule width 14cm height 0.02cm\\
 
 }
 
@@ -86,8 +91,9 @@
 % 項目{タイトル}{著者}{ページ番号}
 \newcommand{\content}[3]{
   \item {\large {#1}}
-  \item \rightline{{#2} . . . {#3}}
-  \vspace{1mm}
+  \vspace{-0.3cm}
+  \item \rightline{\normalsize {#2} . . . {#3}}
+  \vspace{-0.7cm}
 }
 
 %--------------------------------------------------
