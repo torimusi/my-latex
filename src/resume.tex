@@ -18,21 +18,23 @@
 %---------------------------------------------------------------------
 % タイトル作成部分（要変更）
 % \maketitle{タイトル}{title}{名前}{name}
-\maketitle{SDN-IoTによるホームネットワークのQoS向上}
-{Improvement of QoS of Home Network Using SDN-IoT}
+\maketitle{あ}
+{あ}
 {国本 典晟}
 {Tensei Kunimoto}
 
 %---------------------------------------------------------------------
 \section{はじめに}
-近年，IoTデバイスの急激な増加により，ホームネットワークの帯域が逼迫している．
+IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域が逼迫する事態が予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている\cite{guideline}．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
+この問題の解決
 
 %---------------------------------------------------------------------
 \section{関連研究}
 \LaTeX{}を使いこなすにあたり，図表の活用は重要である．基本的にはLaTex Wiki\cite{latex_wiki}を参考にすれば問題ない．\par
 
 %---------------------------------------------------------------------
-\subsection{図}
+\subsection{SDNベースのQoSを考慮した帯域管理フレームワーク}
+Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に再定義し，\par
 図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
 ちなみに，\LaTeX{}ではベクターファイルとしてEPSファイルを推奨していた頃もあったようだが，現在はPDFファイルを使用することが推奨されている．PDFファイルに出力するのが前提なら，dvipdfmxではPDF，PNG，JPEG がそのまま使用できる．dvipdfmxはEPSファイルそのものを自分で扱えないので，Ghostscriptを内部で呼び出して変換する．PDFファイルで問題がなければEPSにこだわる必要はないと思われる．ただし，ジャーナルによっては図としてPDFを使うのがダメだったりするので慎重に．
 
@@ -96,6 +98,8 @@
 % Bibliography
 \footnotesize{
   \begin{thebibliography}{99}
+    \bibitem{guideline} 総務省，帯域制御の運用基準に関するガイドライン（改定），2019．
+    \bibitem{framework} Hung-Chin Jang and Jian-Ting Lin，SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes，
     \bibitem{latex_wiki} Latex Wiki (\url{https://texwiki.texjp.org/}).
     \bibitem{whats_paper} 渡辺 豊, "角皆静男先生のご逝去を悼む", 地球化学, vol.50, no.1, pp.1-3, 2016.
   \end{thebibliography}
