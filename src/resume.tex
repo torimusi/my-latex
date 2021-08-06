@@ -1,5 +1,6 @@
 \documentclass[a4paper,10pt,twocolumn,uplatex]{jsarticle}
 \usepackage{style/nislab}
+\usepackage{tabularx}
 
 %---------------------------------------------------------------------
 % レジュメ種別・日付設定（要変更）
@@ -33,26 +34,31 @@
 
 %---------------------------------------------------------------------
 \subsection{SDNベースのQoSを考慮した帯域管理フレームワーク}
-Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に\tabref{tab:QCI}のように再定義し，QCIサービスをパケット遅延の上限値に基づいてSDNにより3つに分類することで各サービスのQoSを最適化した．\par
+Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に\tabref{tab:QCI}のように再定義し，QCIサービスをパケット遅延の上限値に基づいてSDNにより3つに分類することで各サービスのQoSを最適化を目指した．これにより，従来のISPの帯域制御手法を上回る結果を得た．\par
 
+\newcolumntype{A}{>{\centering\arraybackslash}p{3mm}}
+\newcolumntype{B}{>{\centering\arraybackslash}p{7mm}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{8mm}}
 \begin{table}[!bt]
   \caption{スマートホーム向けに再定義されたQCI}
   \label{tab:QCI}
   \centering
-  \begin{tabular}{ccccccl}
+  {\scriptsize
+  \begin{tabularx}{\linewidth}{ABBCCBX}
     \hline
-    QCI & Priority & Device type & Resource Type & Packet Delay Budget & Packet Error Loss & Example Services\\
+    QCI & Priority & Device type & Resource Type & Packet Delay Budget & Packet Error Loss & \multicolumn{1}{c}{Example Services}\\
     \hline \hline
-    1 & 2 & Non-M2M & GBR & 100ms & $10^-2$ & Conversational voice\\
-    2 & 3 & Non-M2M & GBR & 50ms & $10^-3$ & Real time gaming\\
-    3 & 4 & Non-M2M & GBR & 150ms & $10^-3$ & Conversational video\\
-    4 & 5 & Non-M2M & GBR & 300ms & $10^-6$ & Non-conversational video (Buffered streaming)\\
-    5 & 1 & M2M & Non-GBR & 60ms & $10^-6$ & Mission critical delay sensitive data transfer\\
-    6 & 6 & Non-M2M & Non-GBR & 300ms & $10^-6$ & Video (Buffered streaming) TCP-based (for example，www，email，chat，ftp，p2p and the like)\\
-    7 & 7 & Non-M2M & Non-GBR & 100ms & $10^-3$ & Voice，Video (Live streaming)，Interactive gaming\\
-    8 & 8 & M2M & Non-GBR & N/A & $10^-6$ & Non mission critical delay insensitive data transfer\\
+    1 & 2 & Non-M2M & GBR & 100ms & $10^{-2}$ & Conversational voice\\
+    2 & 3 & Non-M2M & GBR & 50ms & $10^{-3}$ & Real time gaming\\
+    3 & 4 & Non-M2M & GBR & 150ms & $10^{-3}$ & Conversational video\\
+    4 & 5 & Non-M2M & GBR & 300ms & $10^{-6}$ & Non-conversational video (Buffered streaming)\\
+    5 & 1 & M2M & Non-GBR & 60ms & $10^{-6}$ & Mission critical delay sensitive data transfer\\
+    6 & 6 & Non-M2M & Non-GBR & 300ms & $10^{-6}$ & Video (Buffered streaming) TCP-based (for example，www，email，chat，ftp，p2p and the like)\\
+    7 & 7 & Non-M2M & Non-GBR & 100ms & $10^{-3}$ & Voice，Video (Live streaming)，Interactive gaming\\
+    8 & 8 & M2M & Non-GBR & N/A & $10^{-6}$ & Non mission critical delay insensitive data transfer\\
     \hline
-  \end{tabular}
+  \end{tabularx}
+  }
 \end{table}
 
 図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
@@ -73,7 +79,7 @@ Jangらは，スマートホームのネットワークデバイスのための�
 \end{figure*}
 
 %---------------------------------------------------------------------
-\subsection{表}
+\subsection{ダイクストラ法}
 表は\tabref{tab:data_type}のように引用することができ，表を作成する場合は罫線を少なくすることと，横線のみの使用を心がけることが推奨される．
 
 \begin{table}[!bt]
@@ -94,6 +100,12 @@ Jangらは，スマートホームのネットワークデバイスのための�
 
 %---------------------------------------------------------------------
 \section{提案手法}
+
+\subsection{概要}
+
+\subsection{想定するアーキテクチャ}
+
+\subsection{動作手順}
 
 \begin{enumerate} % 箇条書きは \begin{itemize}
   \item 書かれた論文は書いた人の研究者としての人格を表す
