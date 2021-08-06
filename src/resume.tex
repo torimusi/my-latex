@@ -18,23 +18,43 @@
 %---------------------------------------------------------------------
 % タイトル作成部分（要変更）
 % \maketitle{タイトル}{title}{名前}{name}
-\maketitle{あ}
-{あ}
+\maketitle{SDNによるQoSを考慮したIoT通信制御手法}
+{A Method of SDN Based QoS Aware IoT Communication Management}
 {国本 典晟}
 {Tensei Kunimoto}
 
 %---------------------------------------------------------------------
 \section{はじめに}
-IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域が逼迫する事態が予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている\cite{guideline}．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
+近年，画像や動画などの大容量データの需要が急速に拡大したことによるインターネット全体の帯域の逼迫が問題になっているが，IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域の逼迫はより深刻化すると予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている\cite{guideline}．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
 この問題の解決
 
 %---------------------------------------------------------------------
 \section{関連研究}
-\LaTeX{}を使いこなすにあたり，図表の活用は重要である．基本的にはLaTex Wiki\cite{latex_wiki}を参考にすれば問題ない．\par
 
 %---------------------------------------------------------------------
 \subsection{SDNベースのQoSを考慮した帯域管理フレームワーク}
-Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に再定義し，\par
+Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に\tabref{tab:QCI}のように再定義し，QCIサービスをパケット遅延の上限値に基づいてSDNにより3つに分類することで各サービスのQoSを最適化した．\par
+
+\begin{table}[!bt]
+  \caption{スマートホーム向けに再定義されたQCI}
+  \label{tab:QCI}
+  \centering
+  \begin{tabular}{ccccccl}
+    \hline
+    QCI & Priority & Device type & Resource Type & Packet Delay Budget & Packet Error Loss & Example Services\\
+    \hline \hline
+    1 & 2 & Non-M2M & GBR & 100ms & $10^-2$ & Conversational voice\\
+    2 & 3 & Non-M2M & GBR & 50ms & $10^-3$ & Real time gaming\\
+    3 & 4 & Non-M2M & GBR & 150ms & $10^-3$ & Conversational video\\
+    4 & 5 & Non-M2M & GBR & 300ms & $10^-6$ & Non-conversational video (Buffered streaming)\\
+    5 & 1 & M2M & Non-GBR & 60ms & $10^-6$ & Mission critical delay sensitive data transfer\\
+    6 & 6 & Non-M2M & Non-GBR & 300ms & $10^-6$ & Video (Buffered streaming) TCP-based (for example，www，email，chat，ftp，p2p and the like)\\
+    7 & 7 & Non-M2M & Non-GBR & 100ms & $10^-3$ & Voice，Video (Live streaming)，Interactive gaming\\
+    8 & 8 & M2M & Non-GBR & N/A & $10^-6$ & Non mission critical delay insensitive data transfer\\
+    \hline
+  \end{tabular}
+\end{table}
+
 図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
 ちなみに，\LaTeX{}ではベクターファイルとしてEPSファイルを推奨していた頃もあったようだが，現在はPDFファイルを使用することが推奨されている．PDFファイルに出力するのが前提なら，dvipdfmxではPDF，PNG，JPEG がそのまま使用できる．dvipdfmxはEPSファイルそのものを自分で扱えないので，Ghostscriptを内部で呼び出して変換する．PDFファイルで問題がなければEPSにこだわる必要はないと思われる．ただし，ジャーナルによっては図としてPDFを使うのがダメだったりするので慎重に．
 
