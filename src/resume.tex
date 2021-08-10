@@ -8,7 +8,7 @@
 \type{3}
 \year{2021}
 \month{8}
-\date{13}
+\date{11}
 
 %---------------------------------------------------------------------
 % ページ番号設定（要変更）
@@ -27,20 +27,20 @@
 %---------------------------------------------------------------------
 \section{はじめに}
 近年，画像や動画などの大容量データの需要が急速に拡大したことによるインターネット全体の帯域の逼迫が問題になっているが，IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域の逼迫はより深刻化すると予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている\cite{guideline}．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
-この問題の解決を目指して，様々な帯域管理のフレームワークが提案されているが，SDN，ミドルウェアやゲートウェイ
+この問題の解決を目指して，IoTデバイスのサービスカテゴリごとに適切な帯域を割り当てる管理アーキテクチャが提案されているが，複数のQoS要件を満たすためのアルゴリズムが課題になっている．本研究では，アプリケーションの使用頻度を考慮したIoTデバイス管理アーキテクチャの実装と評価を行う．\par
 
 %---------------------------------------------------------------------
 \section{関連研究}
 
 %---------------------------------------------------------------------
 \subsection{SDNベースのQoSを考慮した帯域管理フレームワーク}
-Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に\tabref{tab:QCI}のように再定義し，QCIサービスをパケット遅延の上限値に基づいてSDNにより3つに分類することで各サービスのQoSの最適化を目指した．これにより，従来のISPの帯域制御手法を上回る結果を得た．\par
+Jangらは，スマートホームのネットワークデバイスのための革新的なネットワーク管理モデルを開発する必要があるとして，SDNベースのQoSを考慮した帯域管理フレームワークを提案した\cite{framework}．この研究では，QCI (3GPP LTE QoS Class Identifier) をスマートホーム向けのサービス用に\tabref{tab:QCI}のように再定義し，QCIサービスをパケット遅延の上限値に基づいて「高優先度クラス」「中優先度クラス」「低優先度クラス」の3つに分類することで各サービスのQoSの最適化を目指した．実験の結果，従来のISPの帯域制御手法を上回る結果を得た．\par
 
 \newcolumntype{A}{>{\centering\arraybackslash}p{3mm}}
 \newcolumntype{B}{>{\centering\arraybackslash}p{7mm}}
 \newcolumntype{C}{>{\centering\arraybackslash}p{8mm}}
 \begin{table}[!bt]
-  \caption{スマートホーム向けに再定義されたQCI}
+  \caption{スマートホームサービス向けに再定義されたQCI}
   \label{tab:QCI}
   \centering
   {\scriptsize
@@ -61,82 +61,91 @@ Jangらは，スマートホームのネットワークデバイスのための�
   }
 \end{table}
 
-図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
-ちなみに，\LaTeX{}ではベクターファイルとしてEPSファイルを推奨していた頃もあったようだが，現在はPDFファイルを使用することが推奨されている．PDFファイルに出力するのが前提なら，dvipdfmxではPDF，PNG，JPEG がそのまま使用できる．dvipdfmxはEPSファイルそのものを自分で扱えないので，Ghostscriptを内部で呼び出して変換する．PDFファイルで問題がなければEPSにこだわる必要はないと思われる．ただし，ジャーナルによっては図としてPDFを使うのがダメだったりするので慎重に．
+%図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
+
+%\begin{figure}[!tb]
+%  \centering
+%  \includegraphics[width=\linewidth]{img/sample1.pdf}
+%  \caption{悩む男の子}
+%  \label{fig:sample1}
+%\end{figure}
+
+%\begin{figure*}[!tb]
+%  \centering
+%  \includegraphics[width=\linewidth]{img/sample2.pdf}
+%  \caption{ドライブする家族}
+%  \label{fig:sample2}
+%\end{figure*}
+
+%---------------------------------------------------------------------
+\subsection{AQRA}
+Dengらは，Jangらが提案したスマートホーム向けに再定義したQCIを利用して，AQRA (Application-aware QoS Routing Algorithm) を提案した．\cite{AQRA}AQRAでは，複数のQoS要件を満たすフローの最適な経路の選択をSAアルゴリズムにより行った．また，高優先度クラスに属するアプリケーションのQoS要件の不満足を防ぐために，QoSを考慮したアドミッション制御を提案した．実験の結果，QoSを考慮したアドミッション制御を行ったAQRAは，行わなかったAQRAと比較して高優先度クラスに属するアプリケーションのQoSの適合率は向上した一方で，中優先度クラス及び低優先度クラスに属するアプリケーションのQoSの適合率は低下した．\par
+
+%---------------------------------------------------------------------
+\section{提案手法}
+
+%---------------------------------------------------------------------
+\subsection{概要}
+これまで提案された帯域管理システムでは，QCIのリソースタイプのに応じてアプリケーションを「高優先度クラス」「中優先度クラス」「低優先度クラス」の3つのクラスに分類していた．高優先度クラスに属するのはガスセンサや侵入者アラームなどの非リアルタイムかつ遅延の許されないアプリケーションであり，中優先度クラスに属するのは映像データや音声データなど，遅延制限が厳しいリアルタイムサービスのアプリケーションである，低優先度クラスの属するのは遅延の許されるアプリケーションである．高優先度クラスに属するアプリケーションは必要時には十分な帯域が確保されるべきであるが，スマートホームのユーザの使用頻度は中優先度クラス及び低優先度クラスのアプリケーションの方が高く，常に高優先度クラスのアプリケーションのために中優先度クラス及び低優先度クラスの帯域が犠牲になるのはQoEを著しく損なう．本研究では，\cite{AQRA}で提案されたQoSを考慮したアドミッション制御の見直しを行うとともに，アプリケーションの動作状態に応じてアドミッション制御の切り替えを行い，ユーザのアプリケーションの使用頻度を考慮した通信制御を行う．
+
+%---------------------------------------------------------------------
+\subsection{前提条件}
+前提条件は以下の通りである．\par
+
+\begin{itemize}
+  \item 
+\end{itemize}
+
+本研究で想定するアーキテクチャを図\ref{fig:Architecture}に示す．\par
 
 \begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{img/sample1.pdf}
   \caption{悩む男の子}
-  \label{fig:sample1}
+  \label{fig:Architecture}
 \end{figure}
 
-\begin{figure*}[!tb]
-  \centering
-  \includegraphics[width=\linewidth]{img/sample2.pdf}
-  \caption{ドライブする家族}
-  \label{fig:sample2}
-\end{figure*}
-
 %---------------------------------------------------------------------
-\subsection{ダイクストラ法によるSDNを用いたIoT通信制御法}
-表は\tabref{tab:data_type}のように引用することができ，表を作成する場合は罫線を少なくすることと，横線のみの使用を心がけることが推奨される．
-
-\begin{table}[!bt]
-  \caption{代表的なデータの型}
-  \label{tab:data_type}
-  \centering
-  \begin{tabular}{lcr}
-    \hline
-    データの型         & 宣言   & ビット幅 \\
-    \hline \hline
-    短整数型           & short  & 16       \\
-    整数型             & int    & 32       \\
-    単精度浮動小数点型 & float  & 32       \\
-    倍精度浮動小数店型 & double & 64       \\
-    \hline
-  \end{tabular}
-\end{table}
-
-%---------------------------------------------------------------------
-\section{提案手法}
-
-\subsection{概要}
-これまで提案された帯域管理システムでは，
-
-\subsection{想定するアーキテクチャ}
-本研究で想定するアーキテクチャをに示す．
-
 \subsection{動作手順}
 
 \begin{enumerate} % 箇条書きは \begin{itemize}
   \item 書かれた論文は書いた人の研究者としての人格を表す
   \item データのみ出して論文を書かない者は，テクニシャンである
   \item データも出さず，論文（原著論文）を書かない者は，評論家である
-  \item 研究者は論文を書くことによって成長する．また，成長の糧にしなければならない
-  \item 論文は研究者の飯のタネである
-  \item 論文は後世の研究に影響を与えなければならない
-  \item 研究者は書いた論文に責任を問われる
-  \item 忙しくて論文が書けないというのは，言い訳にはならず，能力がないといっているのと同じである
-  \item 博士論文以上の論文を書けない者は，その博士論文は指導教官のものといわれても仕方がない
-  \item 研究において最も重要なのはアイデアであり，それが試されるのが論文である
 \end{enumerate}
 
 %---------------------------------------------------------------------
 \section{評価}
-本研究で提案する帯域管理システムはQoSが向上することを目的とするため，評価は平均転送率，平均ジッタ，平均遅延時間の測定により行う．
 
 %---------------------------------------------------------------------
-\section{今後の課題}
+\subsection{評価方法}
+本研究で提案する帯域管理システムはQoSが向上することを目的とするため，評価は平均転送率，平均ジッタ，平均遅延時間の測定により行う．その際，高優先度クラスのアプリケーションのサービスが必要となった時は高優先度クラスのアプリケーションのQoS要件を保証するが，平常時はアプリケーションの使用頻度を考慮して，中優先度クラス及び低優先度クラスのQoS要件を保証できているかを評価する．また，提案システムが膨大な数のスマートホームの管理を行った際に目的の通りQoSを保証できるかを確認するため，システムが管理するスマートホームとIoTデバイスの数が増加した場合の平均転送率，平均ジッタ，平均遅延時間の変化を評価する．\par
+
+%---------------------------------------------------------------------
+\subsection{評価環境}
+評価環境を以下に示す．\par
+
+\begin{itemize}
+  \item SDNコントローラにはOpenDaylight Neonを使用する
+  \item IoTデバイスは30台〜100台で変化させる
+  \item 高優先度クラスのフローは30％とする
+  \item 中優先度クラスのフローは40％とする
+  \item 低優先度クラスのフローは30％とする
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{まとめと今後の課題}
+本研究では，\cite{AQRA}で提案されたQoSを考慮したアドミッション制御の見直しと切り替えを行うことで，アプリケーションの使用頻度を考慮した通信制御を行い，帯域の効率的な活用及びスマートホームのサービスの複数のQoS要件の満足を目的とする．\par
+今後の課題として，QoSを考慮したアドミッション制御の具体的な改善案や，アドミッション制御の切り替えの基準を考える必要がある．\par
 
 %---------------------------------------------------------------------
 % Bibliography
 \footnotesize{
   \begin{thebibliography}{99}
     \bibitem{guideline} 総務省，帯域制御の運用基準に関するガイドライン（改定），2019．
-    \bibitem{framework} Hung-Chin Jang and Jian-Ting Lin，SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes，
-    \bibitem{latex_wiki} Latex Wiki (\url{https://texwiki.texjp.org/}).
-    \bibitem{whats_paper} 渡辺 豊, "角皆静男先生のご逝去を悼む", 地球化学, vol.50, no.1, pp.1-3, 2016.
+    \bibitem{framework} Hung-Chin Jang and Jian-Ting Lin，SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes，2017 IEEE SmartWorld/SCALCOM/UIC/ATC/CBDCom/IOP/SCI，2017/8
+    \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang，An Application-aware QoS Routing Algorithm for SDN-based IoT Networking，2018 IEEE ISCC，p186-191，2018/6
+    %\bibitem{latex_wiki} Latex Wiki (\url{https://texwiki.texjp.org/}).
   \end{thebibliography}
 }
 
