@@ -19,14 +19,14 @@
 %---------------------------------------------------------------------
 % タイトル作成部分（要変更）
 % \maketitle{タイトル}{title}{名前}{name}
-\maketitle{SDNによるQoSを考慮したIoT通信制御手法}
-{A Method of SDN Based QoS Aware IoT Communication Management}
+\maketitle{IoTアプリケーションの使用頻度を考慮したSDNによる通信制御手法}
+{A Method of SDN Based Communication Management Considering Frequency of IoT Application Use}
 {国本 典晟}
 {Tensei Kunimoto}
 
 %---------------------------------------------------------------------
 \section{はじめに}
-近年，画像や動画などの大容量データの需要が急速に拡大したことによるインターネット全体の帯域の逼迫が問題になっているが，IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域の逼迫はより深刻化すると予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている\cite{guideline}．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
+近年，画像や動画などの大容量データの需要が急速に拡大したことによるインターネット全体の帯域の逼迫が問題になっているが，IoTデバイスの増加とスマートホームの技術の進歩に伴い，ホームネットワーク内部の帯域並びにホームネットワーク外部のインターネットの帯域の逼迫はより深刻化すると予想される．現在，ISP (Internet Service Provider) は各家庭の総帯域を契約した帯域の範囲内で制御しており，要求される帯域が回線の帯域を上回る場合、特定アプリケーションやユーザの帯域を制御することでネットワークの品質確保に努めている．しかし，そういった帯域制御は多様なサービスやトラフィックに最適化されたものではなく，IoTデバイスが要求する複数のQoS要件を満たすことができない．\par
 この問題の解決を目指して，IoTデバイスのサービスカテゴリごとに適切な帯域を割り当てる管理アーキテクチャが提案されているが，複数のQoS要件を満たすためのアルゴリズムが課題になっている．本研究では，アプリケーションの使用頻度を考慮したIoTデバイス管理アーキテクチャの実装と評価を行う．\par
 
 %---------------------------------------------------------------------
@@ -61,22 +61,6 @@ Jangらは，スマートホームのネットワークデバイスのための�
   }
 \end{table}
 
-%図を挿入する場合は，図\ref{fig:sample1}や\figref{fig:sample2}のように引用することができる．図の横幅が大きい場合は，\figref{fig:sample2}のようにすることもできる．\par
-
-%\begin{figure}[!tb]
-%  \centering
-%  \includegraphics[width=\linewidth]{img/sample1.pdf}
-%  \caption{悩む男の子}
-%  \label{fig:sample1}
-%\end{figure}
-
-%\begin{figure*}[!tb]
-%  \centering
-%  \includegraphics[width=\linewidth]{img/sample2.pdf}
-%  \caption{ドライブする家族}
-%  \label{fig:sample2}
-%\end{figure*}
-
 %---------------------------------------------------------------------
 \subsection{AQRA}
 Dengらは，Jangらが提案したスマートホーム向けに再定義したQCIを利用して，AQRA (Application-aware QoS Routing Algorithm) を提案した．\cite{AQRA}AQRAでは，複数のQoS要件を満たすフローの最適な経路の選択をSAアルゴリズムにより行った．また，高優先度クラスに属するアプリケーションのQoS要件の不満足を防ぐために，QoSを考慮したアドミッション制御を提案した．実験の結果，QoSを考慮したアドミッション制御を行ったAQRAは，行わなかったAQRAと比較して高優先度クラスに属するアプリケーションのQoSの適合率は向上した一方で，中優先度クラス及び低優先度クラスに属するアプリケーションのQoSの適合率は低下した．\par
@@ -89,29 +73,37 @@ Dengらは，Jangらが提案したスマートホーム向けに再定義した
 これまで提案された帯域管理システムでは，QCIのリソースタイプのに応じてアプリケーションを「高優先度クラス」「中優先度クラス」「低優先度クラス」の3つのクラスに分類していた．高優先度クラスに属するのはガスセンサや侵入者アラームなどの非リアルタイムかつ遅延の許されないアプリケーションであり，中優先度クラスに属するのは映像データや音声データなど，遅延制限が厳しいリアルタイムサービスのアプリケーションである，低優先度クラスの属するのは遅延の許されるアプリケーションである．高優先度クラスに属するアプリケーションは必要時には十分な帯域が確保されるべきであるが，スマートホームのユーザの使用頻度は中優先度クラス及び低優先度クラスのアプリケーションの方が高く，常に高優先度クラスのアプリケーションのために中優先度クラス及び低優先度クラスの帯域が犠牲になるのはQoEを著しく損なう．本研究では，\cite{AQRA}で提案されたQoSを考慮したアドミッション制御の見直しを行うとともに，アプリケーションの動作状態に応じてアドミッション制御の切り替えを行い，ユーザのアプリケーションの使用頻度を考慮した通信制御を行う．
 
 %---------------------------------------------------------------------
-\subsection{前提条件}
+\subsection{実験環境}
+本研究で想定するアーキテクチャを図\ref{fig:Architecture}に示す．\par
 前提条件は以下の通りである．\par
 
 \begin{itemize}
-  \item 
+  \item IoTアプリケーション・サービスはイーサネットを介してネットワーク層に接続している．
+  \item IoTアプリケーションはNorthbound APIを介してSDNコントローラにメッセージを送信できる．
+  \item SDNスイッチ間はイーサネットで接続されている．
+  \item SDNスイッチはSouthbound APIを介してSDNコントローラと通信できる．
+  \item SDNスイッチとIoTゲートウェイはイーサネットで接続されている．
+  \item IoTゲートウェイとIoTデバイスは無線通信技術で接続されている．
 \end{itemize}
-
-本研究で想定するアーキテクチャを図\ref{fig:Architecture}に示す．\par
 
 \begin{figure}[!tb]
   \centering
-  \includegraphics[width=\linewidth]{img/sample1.pdf}
-  \caption{悩む男の子}
+  \includegraphics[width=\linewidth]{img/AQRA_Architecture.pdf}
+  \caption{提案システムのアーキテクチャ}
   \label{fig:Architecture}
 \end{figure}
 
 %---------------------------------------------------------------------
 \subsection{動作手順}
+動作手順を以下に示す．
 
 \begin{enumerate} % 箇条書きは \begin{itemize}
-  \item 書かれた論文は書いた人の研究者としての人格を表す
-  \item データのみ出して論文を書かない者は，テクニシャンである
-  \item データも出さず，論文（原著論文）を書かない者は，評論家である
+  \item 各IoTアプリケーションはIoTアプリケーションサーバのIPアドレスとともにQCIをSDNコントローラに送信する．
+  \item IoTゲートウェイはIoTデバイスからデータフローを受信すると，SDNコントローラにPacket Inメッセージを送信する．
+  \item SDNコントローラはPacket Inメッセージを受信すると以下の作業を実行する．
+  \item SDNコントローラはQCIに従いフローを分類する．
+  \item SDNコントローラはルーティングパスを計算しフローエントリを設定する．
+  \item SDNコントローラはQoSを考慮したアドミッション制御をIoTゲートウェイに送信し，優先度の低いIoTアプリケーションのアドミッションを制御する．
 \end{enumerate}
 
 %---------------------------------------------------------------------
@@ -126,11 +118,12 @@ Dengらは，Jangらが提案したスマートホーム向けに再定義した
 評価環境を以下に示す．\par
 
 \begin{itemize}
-  \item SDNコントローラにはOpenDaylight Neonを使用する
-  \item IoTデバイスは30台〜100台で変化させる
-  \item 高優先度クラスのフローは30％とする
-  \item 中優先度クラスのフローは40％とする
-  \item 低優先度クラスのフローは30％とする
+  \item SDNコントローラにはOpenDaylight Neonを用いる．
+  \item エミュレータにはMininetを用いる．
+  \item IoTデバイスは30台〜100台で変化させる．
+  \item 高優先度クラスのフローは30％とする．
+  \item 中優先度クラスのフローは40％とする．
+  \item 低優先度クラスのフローは30％とする．
 \end{itemize}
 
 %---------------------------------------------------------------------
@@ -142,10 +135,8 @@ Dengらは，Jangらが提案したスマートホーム向けに再定義した
 % Bibliography
 \footnotesize{
   \begin{thebibliography}{99}
-    \bibitem{guideline} 総務省，帯域制御の運用基準に関するガイドライン（改定），2019．
     \bibitem{framework} Hung-Chin Jang and Jian-Ting Lin，SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes，2017 IEEE SmartWorld/SCALCOM/UIC/ATC/CBDCom/IOP/SCI，2017/8
     \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang，An Application-aware QoS Routing Algorithm for SDN-based IoT Networking，2018 IEEE ISCC，p186-191，2018/6
-    %\bibitem{latex_wiki} Latex Wiki (\url{https://texwiki.texjp.org/}).
   \end{thebibliography}
 }
 
