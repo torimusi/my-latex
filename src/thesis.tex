@@ -136,7 +136,7 @@
 
 %   * 最近の現状と問題点とか．\par
 
-  SDNとは，\figref{fig:sdn}のようにネットワーク制御機能とデータ転送機能を分離し，データ転送機能のみをネットワーク機器に担わせ，外部のソフトウェアが一括してネットワークの制御を行う技術の総称である．
+  Software-Defined Networking（SDN）とは，\figref{fig:sdn}のようにネットワーク制御機能とデータ転送機能を分離し，データ転送機能のみをネットワーク機器に担わせ，外部のソフトウェアが一括してネットワークの制御を行う技術の総称である．
   SDN登場以前，ルータなどのネットワーク機器はネットワークを制御する機能とデータを転送する機能を併せ持っていたため，ネットワークにおける制約が大きく，環境の変化に対応するのが困難であった．
   SDNにより，ネットワークをソフトウェアで集中制御することで，ネットワークの仮想化，迅速・柔軟な変更，管理の効率化などが可能になり，企業ネットワークやICTシステムなどに利用されている\cite{NEC}．\par
   一方，ホームネットワークの拡張や複雑化のため，SDNのホームネットワークへの適用が期待されている．
@@ -152,7 +152,7 @@
   \begin{figure}[!tb]
     \centering
     \rotatebox{-90}{\includegraphics[scale=0.5]{img/about_sdn.pdf}}
-    \caption{SDNの概要}
+    \caption{SDNの概要，NEC． \url{https://jpn.nec.com/sdn/about_sdn.html}（参照:2022/1）．\cite{NEC}より引用}
     \label{fig:sdn}
   \end{figure}
 
@@ -200,7 +200,11 @@
   \begin{figure}[!tb]
     \centering
     \includegraphics[]{img/qci.png}
-    \caption{ホームネットワーク用に再定義されたQCI}
+    \caption{ホームネットワーク用に再定義されたQCI，Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh．Design
+    A Bandwidth Allocation Framework for SDN Based Smart
+    Home．\textit{2016 IEEE 7th Annual Information Technology，
+    Electronics and Mobile Communication Conference (IEMCON)}，
+    pp．1-6，2016．\cite{Framework}より引用}
     \label{fig:qci}
   \end{figure}
 
@@ -223,7 +227,7 @@
 \label{sec:SDNによるネットワーク管理}
 
   ホームネットワークにはPCやスマートフォン，IoT機器など様々な通信機器が存在しているが，それらは\figref{fig:homenetwork}のように，有線または無線で全て家庭用ルータに接続されており，家庭用ルータを介してインターネットに接続している．
-  本論文では，このような家庭用ルータは「ゲートウェイ」と表記する．\par
+  本論文では，このような家庭用ルータを「ゲートウェイ」と表記する．\par
 
   \begin{figure}[!b]
     \centering
@@ -235,7 +239,7 @@
   ホームネットワークがインターネットに接続するには，\figref{fig:ISP}に示すように，アクセスネットワークとISPを経由する必要がある．
   ホームネットワーク内で発生したデータは，アクセスネットワークを経由し，ISPが管理するサーバへと到達する．
   ISPは，サーバにてホームネットワークで発生したデータをインターネットへ接続するための処理を行い，インターネットへデータを送信する．
-  本論文では，アクセスネットワーク内のパケットの中継機を「ルータ」，ISPが管理するサーバを「ISPサーバ」と総称する．\par
+  本論文では，アクセスネットワーク内のデータの中継機を「ルータ」，ISPが管理するサーバを「ISPサーバ」と総称する．\par
 
   \begin{figure}[!tb]
     \centering
@@ -245,13 +249,13 @@
   \end{figure}
 
   \ref{sec:背景}節で述べた通り，SDNとはネットワーク制御機能とデータ転送機能を分離し，データ転送機能のみをネットワーク機器に担わせ，外部のソフトウェアが一括してネットワークの制御を行う技術の総称である．
-  ホームネットワークとインターネット間のネットワークにSDNを適用するには，データ転送機能を担うネットワーク機器とネットワーク制御機能を担うソフトウェアが必要となる．
+  ホームネットワークとISP間のネットワークにSDNを適用するには，データ転送機能を担うネットワーク機器とネットワーク制御機能を担うソフトウェアが必要となる．
   データ転送機能を担うネットワーク機器は，\figref{fig:ISP}のゲートウェイ，ルータ，ISPサーバが該当する．
   ネットワーク制御機能を担うソフトウェアとして，新たにSDNコントローラを配置する．
   SDNによるネットワーク管理を\figref{fig:proposal}に示す．
   SDNコントローラはゲートウェイ，ルータ，ISPサーバと接続しており，これらとネットワーク制御のメッセージをやりとりすることで，ネットワーク全体の管理を行う．
-  また，アクセスネットワークの通信帯域に応じて，SDNコントローラは\ref{sec:優先度分類}節で述べる優先度分類に従い，ゲートウェイに\ref{sec:アドミッション制御}で述べるアドミッション制御を指示する．
-  ゲートウェイは，SDNコントローラの指示に従い，アドミッション制御を行う．\par
+  また，SDNコントローラは，アクセスネットワークの通信帯域に応じて，\ref{sec:優先度分類}節で述べる優先度分類に従い，\ref{sec:アドミッション制御}節で述べるアドミッション制御をゲートウェイに指示する．
+  ゲートウェイは，SDNコントローラの指示に従いアドミッション制御を行う．\par
 
   \begin{figure}[!tb]
     \centering
@@ -382,7 +386,7 @@
 
 % thebibliography を利用する場合は以下を使用（拘りがなければこちらでOK)
 \begin{thebibliography}{99}
-  \bibitem{NEC} NEC． \url{https://jpn.nec.com/sdn/about_sdn.html}．
+  \bibitem{NEC} NEC． \url{https://jpn.nec.com/sdn/about_sdn.html}（参照:2022/1）．
   \bibitem{ガイドライン} 総務省．帯域制御の運用基準に関するガイドライン（改定）． 2019．
   \bibitem{Framework} Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh．Design
   A Bandwidth Allocation Framework for SDN Based Smart
