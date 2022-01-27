@@ -67,7 +67,7 @@
 \title{ホームネットワークにおけるデータ特性を考慮したSDNによる優先度制御手法}  % 日本語タイトル
 \etitle{SDN Based Priority Control Method Considering Data Attributes for Home Network}  % 英語タイトル
 \author{国本 典晟}  % 著者
-\date{2022年2月31日}  % 日付
+\date{2022年2月10日}  % 日付
 \advisor{佐藤 健哉 教授}  % 指導教員
 \university{同志社大学} % 大学名
 \department{理工学部 情報システムデザイン学科} % 専攻
@@ -197,9 +197,9 @@
   しかし，通信帯域を割り当てるのみで，優先度の高い通信のために優先度の低い通信のパケットを破棄する優先度制御を行わないため，QCI=5に示されるミッションクリティカルな通信のパケットが損失してしまう恐れがある．
   また，QCI=3の通信とQCI=4の通信を同様に制御するなど，通信のリアルタイム性を考慮しておらず，通信帯域が逼迫した際に通信品質への影響が懸念される．
 
-  \begin{figure}[!tb]
+  \begin{figure}[!b]
     \centering
-    \includegraphics[]{img/qci.png}
+    \includegraphics[]{img/qci.pdf}
     \caption{ホームネットワーク用に再定義されたQCI，Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh．Design
     A Bandwidth Allocation Framework for SDN Based Smart
     Home．\textit{2016 IEEE 7th Annual Information Technology，
@@ -287,7 +287,7 @@
           優先度3の音声・映像データの通信が途切れた場合，音声・映像の視聴が一時妨げられるなどの問題が発生するが，優先度2と比較して通信品質への影響が小さいため，リアルタイム性の低い音声・映像データの通信を優先度3に設定する．
     \item[優先度4]\mbox{}\\   
           最も優先度が低い優先度4には，WebサイトなどのTCPによる通信や室温センサなどの非ミッションクリティカルなデータの通信が該当する．
-          これらの通信は遅延やパケットの損失の影響が優先度1~3の通信と比較して小さく，通信が途切れても通信品質にあまり影響しない．
+          これらの通信は遅延やパケットの損失の影響が優先度1\textasciitilde3の通信と比較して小さく，通信が途切れても通信品質にあまり影響しない．
           よって，最も優先度が低い優先度4に設定する．
 
   \end{itemize}
