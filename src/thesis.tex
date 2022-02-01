@@ -296,14 +296,46 @@
 \label{sec:アドミッション制御}
 
   \ref{sec:優先度分類}節で述べた通り，優先度1の通信のデータはミッションクリティカルであるため，遅延やパケットの損失が許されない．
-  ホームネットワークとISPサーバ間の通信帯域が逼迫した場合，優先度1の通信の遅延やパケットの損失の恐れがあるため，優先度の低い通信のパケットを破棄することで，優先度1の通信のための通信帯域を確保するアドミッション制御を行う．\par
+  また，優先度2の通信はリアルタイム性が高いため，遅延や切断の影響が大きい．
+  ホームネットワークとISPサーバ間の通信帯域が逼迫した場合，優先度1または優先度2の通信の遅延やパケットの損失の恐れがあるため，優先度の低い通信のフローを破棄することで，優先度1または優先度2の通信のための通信帯域を確保するアドミッション制御を行う．\par
 
-  アドミッション制御のフローチャートを「図」に示す．
+  SDNを実現する代表的な技術であるOpenFlowでは，宛先IPアドレスや宛先MACアドレス，宛先ポート番号などのルールが同じ通信の集合体を「フロー」と呼び，通信をフローごとに制御している．
+  データ転送機能を担うネットワーク機器はフロー情報を内部に保存し，受信したパケットをフロー情報を参照して処理する．
+  受信したパケットが保存しているフロー情報のいずれにも合致しない時，または必要に応じて，SDNコントローラはネットワーク機器に新たなフロー情報を送信し，ネットワーク機器はそのフロー情報に従い処理を行う．
+  ここでは，SDNコントローラは，優先度1または優先度2の通信に十分な通信帯域がない場合，優先度の低い通信のフローを破棄するようゲートウェイに指示することでアドミッション制御を行う．\par
 
-  優先度1の通信に十分な通信帯域がない場合，SDNコントローラはゲートウェイにアドミッション制御を行うよう指示する．
-  指示を受けたゲートウェイは，現在行われている通信から，優先度の低い通信を選択しそのパケットを破棄する．\par
-  
-  優先度2のリアルタイム性の改善のため，通信帯域に応じてアドミッション制御を行う．
+  優先度1の通信のためのアドミッション制御のフローチャートを\figref{fig:adomission}に示す．\par
+
+  \begin{figure}[!tb]
+    \centering
+    \includegraphics[width=\linewidth]{img/adomission2.pdf}
+    \caption{優先度1のためのアドミッション制御のフローチャート}
+    \label{fig:adomission}
+  \end{figure}
+
+  SDNコントローラはゲートウェイとISPサーバ間の通信帯域を監視し，一定周期ごとに優先度1または優先度2の通信に十分な通信帯域があるか確認する．
+  優先度1の通信に十分な通信帯域がなく，かつ優先度2の通信に十分な通信帯域がない場合，優先度3または優先度4の通信のフローから破棄するフローを選択する．
+  優先度1の通信に十分な通信帯域がなく，優先度2の通信に十分な通信帯域がある場合，優先度2\textasciitilde4の通信のフローから破棄するフローを選択する．
+  その後，SDNコントローラは選択したフローを破棄するようゲートウェイに指示し，ゲートウェイは指示に従いフローを破棄する．
+  優先度1の通信に十分な通信帯域がある場合でも，\figref{fig:adomission2}に示すフローチャートのように，優先度2の通信に十分な通信帯域がない場合には，優先度3\textasciitilde4の通信のフローを破棄するアドミッション制御を行う．\par
+
+  \begin{figure}[!tb]
+    \centering
+    \includegraphics[width=\linewidth]{img/adomission_p2.pdf}
+    \caption{優先度2のためのアドミッション制御のフローチャート}
+    \label{fig:adomission2}
+  \end{figure}
+
+  破棄するフローは基本的に優先度の低い通信のフローから選択する．
+  しかし，ただ優先度の最も低いフローばかり選択していると，同じフローが破棄され続ける飢餓状態に陥る恐れがある．
+  飢餓状態を防ぐため，各フローの破棄された回数を記録し，破棄するフローの選択に用いる．
+  破棄するフローを選択する式を次に示す．\par
+
+  \begin{equation}
+    Min(w_2 dc_2, w_3 dc_3, w_4 dc_4)
+  \end{equation}
+
+  ここで，$w_2$，$w_3$，$w_4$は各優先度の通信に設定された重み，$dc_2$，$dc_3$，$dc_4$は各優先度の通信が破棄された回数を表す．
 
 %\section{文献の引用の仕方}
 %\label{sec:分権の引用の仕方}
@@ -408,9 +440,7 @@
   Home．\textit{2016 IEEE 7th Annual Information Technology，
   Electronics and Mobile Communication Conference (IEMCON)}，
   pp．1-6，2016．
-  \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang．An Application-aware QoS Rout-
-  ing Algorithm for SDN-based IoT Networking．\textit{2018 IEEE Sympo-
-  sium on Computers and Communications (ISCC)}， pp．186-191，2018．
+  \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang．An Application-aware QoS Routing Algorithm for SDN-based IoT Networking．\textit{2018 IEEE Symposium on Computers and Communications (ISCC)}， pp．186-191，2018．
   \bibitem{Mininet} Mininet.
   \bibitem{Ryu} Ryu.
   \bibitem{iperf} iperf.
