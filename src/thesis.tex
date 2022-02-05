@@ -1,5 +1,6 @@
 \documentclass[a4paper,11pt,uplatex]{ujreport}
 \usepackage{style/nislab,style/thesis}
+\usepackage{tabularx}
 
 %----------------------------------------------------------------------
 % 修論・卒論 執筆 注意事項
@@ -193,30 +194,52 @@
 \section{遅延要件による優先度分類}
 \label{sec:遅延要件による優先度分類}
 
-  Jangらは，3GPP Long Term Evolutionが定義したQoS Class Identifier（QCI）をホームネットワークの通信に適用できるよう，\figref{fig:qci}のように再定義した\cite{Framework}．
-  さらに，各QCIの遅延要件（\figref{fig:qci}のPacket Delay Budget）を基準にして通信を3つのカテゴリに分類し，各カテゴリに割り当てる通信帯域の割合を動的に変更することで，QoSとQoE（Quality of Experience）の改善を目指した．\par
+  Jangらは，3GPP Long Term Evolutionが定義したQoS Class Identifier（QCI）をホームネットワークの通信に適用できるよう，\tabref{tab:QCI}のように再定義した\cite{Framework}．
+  さらに，各QCIの遅延要件（\tabref{tab:QCI}のPacket Delay Budget）を基準にして通信を3つのカテゴリに分類し，各カテゴリに割り当てる通信帯域の割合を動的に変更することで，QoSとQoE（Quality of Experience）の改善を目指した\cite{Framework2}．\par
   しかし，通信帯域を割り当てるのみで，優先度の高い通信のために優先度の低い通信のパケットを破棄する優先度制御を行わないため，QCI=5に示されるミッションクリティカルな通信のパケットが損失してしまう恐れがある．
   また，QCI=3の通信とQCI=4の通信を同様に制御するなど，通信のリアルタイム性を考慮しておらず，通信帯域が逼迫した際に通信品質への影響が懸念される．
 
-  \begin{figure}[!b]
+  %\begin{figure}[!b]
+    %\centering
+    %\includegraphics[]{img/qci.pdf}
+    %\caption{ホームネットワーク用に再定義されたQCI}
+    %\label{fig:qci}
+  %\end{figure}
+
+  \newcolumntype{A}{>{\centering\arraybackslash}p{3mm}}
+  \newcolumntype{B}{>{\centering\arraybackslash}p{7mm}}
+  \newcolumntype{C}{>{\centering\arraybackslash}p{8mm}}
+  \begin{table}[!b]
+    \caption{スマートホームサービス向けに再定義されたQCI}
+    \label{tab:QCI}
     \centering
-    \includegraphics[]{img/qci.pdf}
-    \caption{ホームネットワーク用に再定義されたQCI，Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh．Design
-    A Bandwidth Allocation Framework for SDN Based Smart
-    Home．\textit{2016 IEEE 7th Annual Information Technology，
-    Electronics and Mobile Communication Conference (IEMCON)}，
-    pp．1-6，2016．\cite{Framework}より引用}
-    \label{fig:qci}
-  \end{figure}
+    {\scriptsize
+    \begin{tabularx}{\linewidth}{ABBCCBX}
+      \hline
+      QCI & Priority & Device type & Resource Type & Packet Delay Budget & Packet Error Loss & \multicolumn{1}{c}{Example Services}\\
+      \hline \hline
+      1 & 2 & Non-M2M & GBR & 100ms & $10^{-2}$ & Conversational voice\\
+      2 & 3 & Non-M2M & GBR & 50ms & $10^{-3}$ & Real time gaming\\
+      3 & 4 & Non-M2M & GBR & 150ms & $10^{-3}$ & Conversational video\\
+      4 & 5 & Non-M2M & GBR & 300ms & $10^{-6}$ & Non-conversational video (Buffered streaming)\\
+      5 & 1 & M2M & Non-GBR & 60ms & $10^{-6}$ & Mission critical delay sensitive data transfer\\
+      6 & 6 & Non-M2M & Non-GBR & 300ms & $10^{-6}$ & Video (Buffered streaming) TCP-based (for example，www，email，chat，ftp，p2p and the like)\\
+      7 & 7 & Non-M2M & Non-GBR & 100ms & $10^{-3}$ & Voice，Video (Live streaming)，Interactive gaming\\
+      8 & 8 & M2M & Non-GBR & N/A & $10^{-6}$ & Non mission critical delay insensitive data transfer\\
+      \hline
+    \end{tabularx}
+    }
+  \end{table}
 
 \section{帯域保証による優先度分類}
 \label{sec:帯域保証による優先度分類}
 
-  Dengらは，JangらのQCIを基に，帯域保証（\figref{fig:qci}のResource Type）を基準として優先度を分類した\cite{AQRA}．
+  Dengらは，JangらのQCIを基に，帯域保証（\tabref{tab:QCI}のResource Type）を基準として優先度を分類した\cite{AQRA}．
   また，最も優先度の高い通信のQoS要件を満たすため，優先度の低い通信のパケットを破棄するアドミッション制御を行なった．
   これにより，ミッションクリティカルな通信のQoS要件を満たした．\par
   しかし，\ref{sec:遅延要件による優先度分類}節と同様に，QCI=3とQCI=4の通信を同じ優先度で制御しており，通信のリアルタイム性を考慮できていない．
   また，優先度分類の基準を帯域保証のみとしたため，遅延要件とパケットロス要件の厳しいQCI=7の通信が最も優先度が低く分類されてしまっている．
+  さらに，固定された優先度分類を元にアドミッション制御を行うため，優先度分類と実際の通信の重要度や需要が異なる状況においても，固定された優先度分類において優先度が低い通信のパケットを破棄してしまう．
 
 %----------------------------------------------------------------------
 \chapter{提案手法}
@@ -453,14 +476,15 @@ SDNコントローラにはRyu\cite{Ryu}を用いた．
 
 % thebibliography を利用する場合は以下を使用（拘りがなければこちらでOK)
 \begin{thebibliography}{99}
-  \bibitem{NEC} NEC． \url{https://jpn.nec.com/sdn/about_sdn.html}（参照:2022/1）．
-  \bibitem{ガイドライン} 総務省．帯域制御の運用基準に関するガイドライン（改定）． 2019．
-  \bibitem{Framework} Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh．Design
+  \bibitem{NEC} NEC， \url{https://jpn.nec.com/sdn/about_sdn.html}（参照:2022/1）．
+  \bibitem{ガイドライン} 総務省，帯域制御の運用基準に関するガイドライン（改定）． 2019．
+  \bibitem{Framework} Hung-Chin Jang，Chi-Wei Huang and Fu-Ku Yeh，Design
   A Bandwidth Allocation Framework for SDN Based Smart
-  Home．\textit{2016 IEEE 7th Annual Information Technology，
+  Home，\textit{2016 IEEE 7th Annual Information Technology，
   Electronics and Mobile Communication Conference (IEMCON)}，
   pp．1-6，2016．
-  \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang．An Application-aware QoS Routing Algorithm for SDN-based IoT Networking．\textit{2018 IEEE Symposium on Computers and Communications (ISCC)}， pp．186-191，2018．
+  \bibitem{Framework2} Hung-Chin Jang and Jian-Ting Lin，SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes，\textit{2017 IEEE SmartWorld， Ubiquitous Intelligence \& Computing， Advanced \& Trusted Computed， Scalable Computing \& Communications， Cloud \& Big Data Computing， Internet of People and Smart City Innovation (SmartWorld/SCALCOM/UIC/ATC/CBDCom/IOP/SCI)}，pp．1-7，2017．
+  \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang，An Application-aware QoS Routing Algorithm for SDN-based IoT Networking，\textit{2018 IEEE Symposium on Computers and Communications (ISCC)}， pp．186-191，2018．
   \bibitem{Mininet} Mininet.
   \bibitem{Ryu} Ryu.
   \bibitem{iperf} iperf.
