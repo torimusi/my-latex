@@ -408,7 +408,22 @@
 通常，ホームネットワークとISPサーバ間の通信帯域はホームネットワーク内の通信帯域に比べて，デバイスまたはホームネットワークの数が少ない場合，提案する優先度制御にはルータの有無は影響しないため，上記のネットワーク構成によりシミュレーションを行なった．\par
 4つのデバイスは，ISPサーバへ向けて，ゲートウェイを経由してパケットを送信する．
 ゲートウェイは，SDNからの制御メッセージに従い，アドミッション制御を行う．
-SDNコントローラにはRyu\cite{Ryu}を用いた．
+SDNコントローラにはRyu\cite{Ryu}を用いた．\par
+
+各リンクの帯域は1Mbpsに制限されている．
+デバイスのパケット送信パラメータを表に示す．
+閾値を表に示す．
+
+4つのデバイスは，ms間隔で10000byteのパケットを500個送信する．
+ゲートウェイが各デバイスと接続する4つのポートにそれぞれ通信量の閾値が設定する．
+各ポートが受信する通信量が閾値を超えた場合，そのポートに接続されているデバイスの通信を行うのに十分な通信帯域がないと見なし，その通信の優先度に応じてアドミッション制御が行われる．
+パケット送信にはhping3を用いた．
+
+SDNコントローラは15秒ごとに各ポートの通信量を確認する．
+閾値を超えていた場合，\ref{sec:アドミッション制御}節に示した式を用いて破棄するフローを選択し，ゲートウェイにアドミッション制御を指示する．
+指示を受けたゲートウェイは，そのフローを受信してもISPサーバへ送信せず破棄する．
+
+優先度に応じた優先度制御の有効性を評価するため，各優先度の
 
 \section{通信性能}
 \label{通信性能}
@@ -491,7 +506,7 @@ SDNコントローラにはRyu\cite{Ryu}を用いた．
   \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang，An Application-aware QoS Routing Algorithm for SDN-based IoT Networking，\textit{2018 IEEE Symposium on Computers and Communications (ISCC)}， pp．186-191，2018．
   \bibitem{Mininet} Mininet.
   \bibitem{Ryu} Ryu.
-  \bibitem{iperf} iperf.
+  \bibitem{hping3} hping3.
 \end{thebibliography}
 
 % BibTex を利用する場合は以下を使用（初めての人には難しいかも）
