@@ -66,7 +66,7 @@
 %----------------------------------------------------------------------
 \type{1}  % 1:卒業論文 2:修士論文
 \title{ホームネットワークにおけるデータ特性を考慮したSDNによる優先度制御手法}  % 日本語タイトル
-\etitle{SDN Based Priority Control Method Considering Data Attributes for Home Network}  % 英語タイトル
+\etitle{SDN Based Priority Control Method\\Considering Data Attributes for Home Network}  % 英語タイトル
 \author{国本 典晟}  % 著者
 \date{2022年2月10日}  % 日付
 \advisor{佐藤 健哉 教授}  % 指導教員
@@ -91,7 +91,6 @@
 %----------------------------------------------------------------------
 \begin{abstract}
   %   * 概要は，論文全体を読まなくてもその研究の序論から結論までが理解できるようにするものです．本文の内容を忠実に反映させるだけでなく，研究の新規性や重要性を簡潔かつ的確に伝えられることが，より多くの読者を獲得する鍵となります．概要は，研究目的から研究方法，研究結果，そして結論に至る肝心な要素のすべてが要約されていなければならないのです．
-
   SDNのホームネットワークへの適用が期待されているが，ホームネットワークには特性の異なるデータの通信が混在し，通信の種類と量が時間帯によって変動するため，それらの制御方法が課題となっている．現在のインターネットサービスプロバイダはデータ特性を考慮せず制御を行うため，通信帯域の逼迫の際に重要なパケットの損失などの問題が生じる．また，従来の優先度分類では，テレワークの増加などの昨今のリアルタイム性の高い通信の需要を十分に考慮できておらず，優先度が固定されていたため状況に応じた優先度制御が困難であった．本研究では，リアルタイム性を含むデータ特性から通信を4つに分類し，動的に優先度を設定し，優先度制御を行う手法を提案した．ホームネットワークを想定した仮想ネットワークを構築して実験を行い，先行研究と比較してリアルタイム性の点で改善し，状況に応じて優先すべき通信の性能が向上した．
 
 \end{abstract}
@@ -151,7 +150,7 @@
   加えて，ホームネットワークはユーザや時間帯による通信の種類と量の変動が大きく，ユーザや家庭の状況によって通信の重要度や需要も変化する\cite{Pattern}．
   こうした重要度やQoS要件，リアルタイム性などのデータ特性が異なる通信を状況に応じて制御するには，データ特性から通信を分類して動的に優先度を設定し，SDNを用いて通信帯域に応じてパケットの破棄などを行う優先度制御が必要である．
 
-  \begin{figure}[!tb]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=\linewidth]{img/SDN_trimmed.pdf}
     \caption{SDNの概要}
@@ -199,17 +198,10 @@
   しかし，通信帯域を割り当てるのみで，優先度の高い通信のために優先度の低い通信のパケットを破棄する優先度制御を行わないため，QCI=5に示されるミッションクリティカルな通信のパケットが損失してしまう恐れがある．
   また，QCI=3の通信とQCI=4の通信を同様に制御するなど，通信のリアルタイム性を考慮しておらず，通信帯域が逼迫した際に通信品質への影響が懸念される．
 
-  %\begin{figure}[!b]
-    %\centering
-    %\includegraphics[]{img/qci.pdf}
-    %\caption{ホームネットワーク用に再定義されたQCI}
-    %\label{fig:qci}
-  %\end{figure}
-
   \newcolumntype{A}{>{\centering\arraybackslash}p{3mm}}
   \newcolumntype{B}{>{\centering\arraybackslash}p{7mm}}
   \newcolumntype{C}{>{\centering\arraybackslash}p{8mm}}
-  \begin{table}[!b]
+  \begin{table}[tb]
     \caption{スマートホームサービス向けに再定義されたQCI}
     \label{tab:QCI}
     \centering
@@ -253,9 +245,9 @@
   ホームネットワークにはPCやスマートフォン，IoT機器など様々な通信機器が存在しているが，それらは\figref{fig:homenetwork}のように，有線または無線で全て家庭用ルータに接続されており，家庭用ルータを介してインターネットに接続している．
   本論文では，このような家庭用ルータを「ゲートウェイ」と表記する．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{img/homenetwork_trimmed.pdf}
+    \includegraphics[width=0.9\linewidth]{img/homenetwork_trimmed.pdf}
     \caption{ホームネットワークの構造}
     \label{fig:homenetwork}
   \end{figure}
@@ -265,9 +257,9 @@
   ISPは，サーバにてホームネットワークで発生したデータをインターネットへ接続するための処理を行い，インターネットへデータを送信する．
   本論文では，アクセスネットワーク内のデータの中継機を「ルータ」，ISPが管理するサーバを「ISPサーバ」と総称する．\par
 
-  \begin{figure}[!tb]
+  \begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{img/ISP_trimmed.pdf}
+    \includegraphics[width=0.85\linewidth]{img/ISP_trimmed.pdf}
     \caption{ホームネットワークとインターネット間のネットワーク}
     \label{fig:ISP}
   \end{figure}
@@ -281,27 +273,20 @@
   また，SDNコントローラは，アクセスネットワークの通信帯域やホームネットワークの状況に応じて，\ref{sec:通信の分類}節で述べる通信の分類に，\ref{sec:アドミッション制御}節で述べるように優先度を設定し，アドミッション制御をゲートウェイに指示する．
   ゲートウェイは，SDNコントローラの指示に従いアドミッション制御を行う．\par
 
-  %\begin{figure}[!tb]
-    %\centering
-    %\includegraphics[width=\linewidth]{img/proposal.pdf}
-    %\caption{SDNによるネットワーク管理}
-    %\label{fig:proposal}
-  %\end{figure}
+  \clearpage
+
+  \begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.85\linewidth]{img/proposal.pdf}
+    \caption{SDNによるネットワーク管理}
+    \label{fig:proposal}
+  \end{figure}
 
 \section{通信の分類}
 \label{sec:通信の分類}
 
   ホームネットワークには重要度やQoS要件，リアルタイム性など，データ特性の異なる通信が混在している．
   SDNを用いてホームネットワークの通信を制御するために，以下のようにデータ特性を基準として通信を4種類のカテゴリに分類する．
-
-  \clearpage
-
-  \begin{figure}[!tb]
-    \centering
-    \includegraphics[width=\linewidth]{img/proposal.pdf}
-    \caption{SDNによるネットワーク管理}
-    \label{fig:proposal}
-  \end{figure}
 
   \begin{itemize}
     \setlength{\leftskip}{1.0cm}
@@ -338,9 +323,9 @@
   受信したパケットが保存しているフロー情報のいずれにも合致しない時，または必要に応じて，SDNコントローラはネットワーク機器に新たなフロー情報を送信し，ネットワーク機器はそのフロー情報に従い処理を行う．
   ここでは，SDNコントローラは，カテゴリ1またはカテゴリ2の通信に十分な通信帯域がない場合，優先度の低い通信のフローを破棄するようゲートウェイに指示することでアドミッション制御を行う．\par
 
-  \begin{figure}[!tb]
+  \begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{img/adomission_c1.pdf}
+    \includegraphics[width=0.94\linewidth]{img/adomission_c1.pdf}
     \caption{カテゴリ1のためのアドミッション制御のフローチャート}
     \label{fig:adomission}
   \end{figure}
@@ -352,7 +337,7 @@
   その後，SDNコントローラは選択したフローを破棄するようゲートウェイに指示し，ゲートウェイは指示に従いフローを破棄する．
   カテゴリ1の通信に十分な通信帯域がある場合でも，\figref{fig:adomission2}に示すフローチャートのように，カテゴリ2の通信に十分な通信帯域がない場合には，カテゴリ3\textasciitilde4の通信のフローを破棄するアドミッション制御を行う．\par
 
-  \begin{figure}[!tb]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=\linewidth]{img/adomission_c2.pdf}
     \caption{カテゴリ2のためのアドミッション制御のフローチャート}
@@ -405,9 +390,9 @@
   提案手法の有効性を評価するにあたり，ネットワークエミュレータであるMininetを用いてホームネットワークとISPサーバ間のネットワークを想定した仮想ネットワークを構築し，ネットワークシミュレーションを行った．
   構築したネットワークの構成を\figref{fig:experiment}に示す．\par
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{img/experiment.pdf}
+    \includegraphics[width=0.85\linewidth]{img/experiment.pdf}
     \caption{シミュレーションを行なったネットワーク構成}
     \label{fig:experiment}
   \end{figure}
@@ -420,13 +405,11 @@
   ゲートウェイはSDNコントローラと接続し，優先度制御に必要なメッセージをやり取りする．
   SDNコントローラには，SDN構築フレームワークであるRyuを用いた．\par
 
-  \clearpage
-
   提案手法の有効性を評価するため，通信帯域が逼迫した際に優先度が高い通信の性能を測定する．
   通信帯域の逼迫を再現するため，各デバイスとゲートウェイ間のリンクおよびゲートウェイとISPサーバ間のリンクの通信帯域を1Mbpsに制限する．
   そして，TCP/IPパケットジェネレータおよびアナライザであるhping3を用いて，各デバイスからISPサーバへとパケットを送信する．送信するパケットのパラメータを\tabref{tab:packetParameter}に示す．
 
-  \begin{table}[!tb]
+  \begin{table}[tb]
     \caption{各デバイスが送信するパケットのパラメータ}
     \label{tab:packetParameter}
     \centering
@@ -450,7 +433,7 @@
   破棄するフローの選択には，\ref{sec:アドミッション制御}節で述べた通り破棄された回数も優先度と同時に用いる．
   ここでは，各カテゴリの重みの初期値を$w_2=3$，$w_3=2$，$w_4=1$とした．\par
 
-  \begin{table}[!tb]
+  \begin{table}[tb]
     \caption{各ポートの通信量の閾値}
     \label{tab:threshold}
     \centering
@@ -476,7 +459,7 @@
   提案手法を用いた場合の優先度1のスループットは228.84Kbps，優先度2のスループットは200.35Kbps，優先度3のスループットは143.37Kbps，優先度4のスループットは98.33Kbpsであった．
   優先度制御を行わない場合の優先度1のスループットは163.59Kbps，優先度2のスループットは212.3Kbps，優先度3のスループットは216.89Kbps，優先度4のスループットは218.73Kbpsであった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/throughput_1.pdf}
     \caption{優先度制御しない場合とのスループットの比較}
@@ -488,7 +471,7 @@
   提案手法を用いた場合の優先度1の平均遅延時間は8634.0ms，優先度2の平均遅延時間は8601.9ms，優先度3の平均遅延時間は8342.6ms，優先度4の平均遅延時間は8536.4msであった．
   優先度制御を行わない場合の優先度1の平均遅延時間は9026.7ms，優先度2の平均遅延時間は9392.9ms，優先度3の平均遅延時間は9256.6ms，優先度4の平均遅延時間は9486.7msであった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/RTT_1.pdf}
     \caption{優先度制御しない場合との遅延時間の比較}
@@ -499,7 +482,7 @@
   提案手法を用いた場合の優先度1のパケット損失率は17\%，優先度2の平均遅延時間は28\%，優先度3の平均遅延時間は48\%，優先度4のパケット損失率は65\%であった．
   提案手法を用いた場合の優先度1のパケット損失率は41\%，優先度2の平均遅延時間は23\%，優先度3の平均遅延時間は22\%，優先度4のパケット損失率は21\%であった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/packetloss_1.pdf}
     \caption{優先度制御しない場合とのパケット損失率の比較}
@@ -514,7 +497,7 @@
   提案手法を用いた場合の優先度1のスループットは246.98Kbps，優先度2のスループットは204.03Kbps，優先度3のスループットは182.89Kbps，優先度4のスループットは99.26Kbpsであった．
   優先度制御を行わない場合の優先度1のスループットは240.79Kbps，優先度2のスループットは194.84Kbps，優先度3のスループットは103.85Kbps，優先度4のスループットは172.78Kbpsであった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/throughput_2.pdf}
     \caption{固定された優先度分類とのスループットの比較}
@@ -526,7 +509,7 @@
   提案手法を用いた場合の優先度1の平均遅延時間は6704.9ms，優先度2の平均遅延時間は6532.8ms，優先度3の平均遅延時間は6816.8ms，優先度4の平均遅延時間は6561.3msであった．
   優先度制御を行わない場合の優先度1の平均遅延時間は6802.5ms，優先度2の平均遅延時間は6834.7ms，優先度3の平均遅延時間は6276.8ms，優先度4の平均遅延時間は6745.1msであった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/RTT_2.pdf}
     \caption{固定された優先度分類との遅延時間の比較}
@@ -537,7 +520,7 @@
   提案手法を用いた場合の優先度1のパケット損失率は10\%，優先度2の平均遅延時間は26\%，優先度3の平均遅延時間は34\%，優先度4のパケット損失率は64\%であった．
   提案手法を用いた場合の優先度1のパケット損失率は13\%，優先度2の平均遅延時間は30\%，優先度3の平均遅延時間は63\%，優先度4のパケット損失率は38\%であった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/packetloss_2.pdf}
     \caption{固定された優先度分類とのパケット損失率の比較}
@@ -553,7 +536,7 @@
   パケット到達の値が1の時はパケットが正常に到達しており，0の時はパケットが損失または破棄されていることを表す．
   カテゴリ2では6回のパケットの損失または破棄があったのに対して，カテゴリ3では7回のパケットの損失または破棄があった．
 
-  \begin{figure}[!b]
+  \begin{figure}[tb]
     \centering
     \includegraphics[width=0.85\linewidth]{img/realtime.pdf}
     \caption{パケットの到達/損失または破棄}
