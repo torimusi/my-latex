@@ -1,0 +1,112 @@
+%--------------------------------------------------
+% 基本変更不要
+%--------------------------------------------------
+
+%--------------------------------------------------
+% パッケージのインクルード
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{txfonts}
+
+%--------------------------------------------------
+% ページスタイル
+\pagestyle{empty}
+
+%--------------------------------------------------
+% ページのレイアウト
+\topmargin=0cm
+\headheight=0cm
+\headsep=0cm
+\textwidth=45zw
+\textheight=80zw
+\marginparsep=0cm
+\marginparwidth=0cm
+\footskip=0cm
+
+% Bodyを左右中央揃え
+\oddsidemargin=\paperwidth
+\advance\oddsidemargin by -\textwidth
+\divide\oddsidemargin by 2
+\advance\oddsidemargin by -\hoffset
+\advance\oddsidemargin by -1in
+
+%--------------------------------------------------
+% 日付
+\newcommand{\symposiumdate}[3]{
+  \hspace{3zw}
+  \Large \rightline{{#1} / {#2} / {#3}}
+}
+
+%--------------------------------------------------
+% タイトル
+\newcommand{\symposiumtitle}[2]{
+  \centering
+  \vrule width 14cm height 0.1cm\\
+  \vspace{-0.6cm}
+  \vrule width 13.5cm height 0.02cm\\
+  \vspace{0.6cm}
+  {\fontsize{36pt}{0pt}\selectfont
+  {#1}\\
+  }
+  \vspace{0.5cm}
+  \LARGE {#2}\\
+  \vrule width 13.5cm height 0.02cm\\
+  \vspace{-0.65cm}
+  \vrule width 14cm height 0.1cm\\
+}
+
+%--------------------------------------------------
+% 出版元(研究室名)
+\newcommand{\publisher}{
+  \begin{center}
+    \Large
+    同志社大学大学院理工学研究科情報工学専攻\\
+    ネットワーク情報システム研究室
+    \vspace{1cm}
+    \vrule width 14cm height 0.08cm
+    \vspace{0.2cm}
+    \large Published by the Network Information Systems Laboratory of Doshisha University
+  \end{center}
+}
+
+%--------------------------------------------------
+% 見出し{発表会名}
+\newcommand{\makeheading}{
+  \centering
+  \vrule width 14cm height 0.02cm\\
+  \vspace{0.3cm}
+  \large ネットワーク情報システム研究室\\
+  \huge {研究室合同発表会}\\
+  \vspace{0.1cm}
+  \LARGE 目次\\
+  \vspace{-0.2cm}
+  \vrule width 14cm height 0.02cm\\
+}
+
+%--------------------------------------------------
+% セッション{セッション名}
+\newcommand{\session}[1]{
+  \centering
+  $\blacksquare$
+  $\square$
+  \rule[1.5mm]{5cm}{0.05mm}
+  {\large {#1}}
+  \rule[1.5mm]{5cm}{0.05mm}
+  $\square$
+  $\blacksquare$
+}
+
+%--------------------------------------------------
+% 項目{発表時間}{タイトル}{著者}{ページ番号}
+\newcommand{\content}[4]{
+  \item \leftline{\small {#1}}
+  \begin{description}
+    \vspace{-3mm}
+    \setlength{\leftskip}{-2zw}
+    \item {\large {#2}}
+  \end{description}
+  \vspace{-0.3cm}
+  \item \rightline{\normalsize {#3} . . . {#4}}
+  \vspace{-0.7cm}
+}
+
+%--------------------------------------------------
