@@ -91,13 +91,16 @@
 %----------------------------------------------------------------------
 \begin{abstract}
   %   * 概要は，論文全体を読まなくてもその研究の序論から結論までが理解できるようにするものです．本文の内容を忠実に反映させるだけでなく，研究の新規性や重要性を簡潔かつ的確に伝えられることが，より多くの読者を獲得する鍵となります．概要は，研究目的から研究方法，研究結果，そして結論に至る肝心な要素のすべてが要約されていなければならないのです．
-  SDNのホームネットワークへの適用が期待されているが，ホームネットワークには特性の異なるデータの通信が混在し，通信の種類と量が時間帯によって変動するため，それらの制御方法が課題となっている．現在のインターネットサービスプロバイダはデータ特性を考慮せず制御を行うため，通信帯域の逼迫の際に重要なパケットの損失などの問題が生じる．また，従来の優先度分類では，テレワークの増加などの昨今のリアルタイム性の高い通信の需要を考慮できておらず，優先度が固定されていたため状況に応じた優先度制御が困難であった．本研究では，リアルタイム性を含むデータ特性から通信を4つに分類し，動的に優先度を設定し，優先度制御を行う手法を提案した．ホームネットワークを想定した仮想ネットワークを構築して実験を行い，先行研究と比較してリアルタイム性の点で改善し，状況に応じて優先すべき通信の性能が向上した．
+
+  % 車両に搭載されたセンサで認識できる範囲は限定的であるため，周囲の車両や路側機のセンサが認識した情報を通信により共有することで，交通の安全性や効率の向上を目指す協調型自動運転の研究が行われている．各車両や路側機が収集したセンサデータをサーバ上で集約し，統合した情報を車両に配信することで，車両は自車両の搭載センサでは認識できない情報を取得することができる．しかし，サーバが管轄するエリア内に，サーバまでの通信帯域で収容可能な台数以上の車両が集中した場合，通信帯域が逼迫し，通信の品質（QoS）を保証することができない事態が懸念される．本研究では，ソフトウェアを介してネットワークを一元管理するネットワーク仮想化技術を利用して，車両の集中状況を事前に想定し，QoSの予測を行う．また，車両の将来のQoSの予約を行うことで，車両のQoSを保証することを提案する．提案手法について，ネットワークシミュレーションによる評価を行い，有効性を検討する．
+
+  Due to the limited sensing range of sensors installed in vehicles, research on cooperative automated driving aiming to enhance traffic safety and efficiency is being conducted by sharing information recognized by sensors on surrounding vehicles and roadside units through communication. Aggregating sensor data collected by individual vehicles and roadside units on a server, and delivering integrated information to vehicles, allows them to acquire information beyond what can be recognized by their onboard sensors. However, there is a concern that if the number of vehicles concentrated within the area managed by the server exceeds the capacity accommodated by the communication bandwidth to the server, the communication bandwidth may become congested, and it may not be possible to guarantee the quality of service (QoS) of communication. In this study, we propose the use of network virtualization technology to centrally manage the network through software, anticipating the concentration of vehicles in advance and predicting QoS. Additionally, we propose reserving future QoS for vehicles to ensure their QoS. We evaluate the proposed method through network simulation to assess its effectiveness.
 
 \end{abstract}
 
 % キーワードを3つ設定する
 % 卒業論文は日本語，修士論文は英語
-\addkeywords{SDN}{ホームネットワーク}{分類アルゴリズム}
+\addkeywords{Cooperative automated driving}{QoS}{Network Virtualization}
 
 %----------------------------------------------------------------------
 % 変更不要
@@ -140,25 +143,25 @@
     しかし，自車両に搭載されたセンサのみでは，建物の陰にいる歩行者を認識できないなど，認識できる範囲は限定的である．
     そのため，建物の陰から急に飛び出した歩行者や，見通しの悪い交差点における出会い頭の事故などには対応が困難であるという問題がある．
     こうした状況に対応するため，車両と，車両や路側機などの様々なものとの無線通信であるV2X（Vehicle to Everything）通信を利用して，安全性の向上を目指す協調型自動運転の研究が行われている\cite{CAD, ITS}．
-    協調型自動運転では，車両や路側機は，自身が搭載するセンサで収集したセンサ情報や走行情報などをサーバに送信する．
+    協調型自動運転では，\figref{fig:CAD}に示すように，車両や路側機は自身が搭載するセンサで収集したセンサ情報や走行情報などをサーバに送信する．
     そして，サーバは送信された情報を統合し，統合した情報を再度車両に送信する．
     この情報には他の車両や路側機に搭載されたセンサで収集された情報が含まれているため，車両は自車両に搭載されたセンサだけでは認識できない周囲の走行環境を認識することができるようになり，見通しの悪い環境における事故を回避することができる．\par
     % 一般的に，協調型自動運転において，車両や路側機がインターネットを介してクラウドサーバと通信を行うことが検討されている．
     % しかし，クラウドサーバのみを利用する場合，膨大な数の車両の情報を集約・統合することによる処理負荷や，インターネットを介することによる通信遅延の増大が懸念される．
     % 協調型自動運転では，交差点における衝突の回避や車線合流時の車車間の調停など，低遅延での情報処理が求められるため，こうした処理負荷や通信遅延の増大は重大な問題となる．
     % そこで，地理的に分散配置されたエッジサーバを利用することで，処理負荷の分散や通信遅延の軽減が期待されている\cite{edge}．
-    情報を統合するサーバには，そのサーバが管轄するエリア内の全ての車両や路側機から定期的に情報が集約される．
-    しかし，サーバまでの通信帯域は限られている場合が多く，車両が集中した場合に使用可能な通信帯域以上に通信帯域を必要としてしまい，通信帯域が逼迫することが懸念される．
+    情報を統合するサーバは，処理負荷の分散や通信遅延の軽減のために地理的に分散されており\cite{edge}，サーバにはそのサーバが管轄するエリア内の全ての車両や路側機から定期的に情報が集約される．
+    しかし，サーバまでの通信帯域は限られている場合が多く，車両が集中した場合に使用可能な通信帯域以上に通信帯域を必要としてしまい，通信帯域が逼迫することが懸念される\cite{C-V2X}．
     協調型自動運転では，事故の回避等のために情報が必要となるため，低遅延での情報の送受信が求められるが，通信帯域が逼迫すると情報の送受信の遅延が増大するため，許容される遅延時間内に情報を受け取ることができず，通信の品質（Quality of Service，以下QoS）が保証されない．
     また，車両は事前に通信のQoSが保証されるか否かを把握することができないままに協調型自動運転を試みることになるため，安全性や効率の点で重大な問題となる．
 
 
-%   \begin{figure}[tb]
-%     \centering
-%     \includegraphics[width=\linewidth]{img/SDN_trimmed.pdf}
-%     \caption{SDNの概要}
-%     \label{fig:sdn}
-%   \end{figure}
+  \begin{figure}[tb]
+    \centering
+    \includegraphics[width=\linewidth]{img/サーバを用いた協調型自動運転.pdf}
+    \caption{サーバを用いた協調型自動運転}
+    \label{fig:CAD}
+  \end{figure}
 
 \section{目的}
 \label{sec:目的}
@@ -185,8 +188,8 @@
 \section{本論文の構成}
 \label{sec:本論文の構成}
 
-  第\ref{chap:関連研究}章では，
-  第\ref{chap:提案手法}章では，第\ref{chap:関連研究}章で注目されたデータ特性にリアルタイム性を合わせて考慮した通信の分類と，動的に優先度を設定し，通信帯域に応じて優先度の低い通信のパケットを破棄するアドミッション制御について述べる．
+  第\ref{chap:関連研究}章では，協調型自動運転のV2X通信のQoS予測を行った関連研究について述べる．
+  第\ref{chap:提案手法}章では，ネットワーク仮想化技術を利用したV2X通信の制御と，QoSの予測および予約の方法について述べる．
   第\ref{chap:評価}章では，提案手法の有効性を評価するための実験方法とその評価結果について述べる．
   第\ref{chap:考察}章では，実験によって得られた結果に対して考察を行う．
   第\ref{chap:おわりに}章では，本論文のまとめを述べる．
@@ -196,10 +199,21 @@
 \chapter{関連研究}
 \label{chap:関連研究}
 
-  通信の信頼性向上の研究
-  QoSの予測
-  QoSの予約
-
+  協調型自動運転では，車両が周囲の車両や路側機、サーバなどとリアルタイムで情報を共有することで，安全かつ効率的な交通システムを構築することができる．
+  車両による事故を防ぐなどのユースケースに対してV2X通信を行うため，協調型自動運転のための通信は厳しいQoSの要件が決められており，パケットロス率や通信遅延について詳細に要求されている．%参考文献
+  しかし，V2X通信では車両の高い移動性や交差点における車両の集中など，様々な要因が通信のQoSに影響を与える%参考文献．
+  QoSの急激な低下が発生した場合，協調型自動運転におけるアプリケーションの機能不全が発生し，状況によっては人間の安全を脅かす可能性がある．%参考文献
+  そのため，QoSの予測は重要であり，QoSの変化を予測することで事前に必要な対策を講じることができる．\par
+  Barmpounakisらは，5Gのネットワークからデータを収集・分析する機能を利用してQoSに関する指標を求め，地図情報をグリッドに分割してQoSの指標を用いてクラスタリングすることで，機械学習を用いてQoSを予測した%参考文献．
+  ネットワークシミュレータを用いた実験により，クラスタの数と予測精度のトレードオフの関係を示した．
+  また，Xuらは，Transformerの長期時系列予測モデルであるInformerモデルを利用し，V2X通信の時間的および局所的な特徴を考慮したQoS予測を行った．%参考文献
+  実際の交通渋滞を模倣した環境でV2X通信に関するデータを収集し，パケットロス率および通信遅延について予測精度の向上を示した．\par
+  これらの研究を含めて，V2X通信のQoS予測に関する研究は機械学習を用いたものが多く見られるが，V2X通信特有の拘束条件のもとに，複数の機械学習の比較や計算効率性の向上を目指している．
+  機械学習を用いた予測では過去のデータから傾向をもとに予測を行うため，例えばある道路において通勤時間帯に車両が混雑するというデータがある場合，次の日もその時間帯に道路は混雑すると予測する．
+  しかし，道路工事や交通事故などにより車両の走行ルートに変更が生じた場合，道路が混雑するエリアを正しく予測できない可能性がある．
+  そのため，過去のデータだけではなく，現時点での車両の走行ルートなどの情報から，近い将来のQoSを予測することが重要である．
+  また，車両は自身の情報およびサーバから受信する情報しか持たないため，他の車両の走行ルートなどからある地点でのQoSが保証されるかを予測することができない．
+  したがって，
 
 %----------------------------------------------------------------------
 \chapter{提案手法}
@@ -658,17 +672,24 @@ QoS予約された通信帯域は，\ref{QoSPredictionMethod}項の$B_{saved}$�
 
 % thebibliography を利用する場合は以下を使用（拘りがなければこちらでOK)
 \begin{thebibliography}{99}
-  \bibitem{NEC} NEC, \url{https://jpn.nec.com/sdn/about_sdn.html}（参照:2022/1）．
-  \bibitem{SDNSurvey} Abdalkrim M. Alshnta, Mohd Faizal Abdollah and Ahmed Al-Haiqi, SDN in the home: A survey of home network solutions using Software Defined Networking, \textit{Cogent Engineering}, Vol. 5, No. 1, pp. 1-40, 2018.
-  \bibitem{ガイドライン} 総務省，帯域制御の運用基準に関するガイドライン（改定）， 2019．
-  \bibitem{Framework} Hung-Chin Jang, Chi-Wei Huang and Fu-Ku Yeh, Design
-  A Bandwidth Allocation Framework for SDN Based Smart
-  Home, \textit{2016 IEEE 7th Annual Information Technology, 
-  Electronics and Mobile Communication Conference (IEMCON)}, 
-  pp. 1-6, 2016.
-  \bibitem{Pattern} Steven M. Beyer, Barry E. Mullins, Scott R. Graham and Jason M. Bindewald, Pattern-of-Life Modeling in Smart Homes, \textit{IEEE Internet of Things Journal}, Vol. 5, No. 6, pp. 5317-5325, 2018.
-  \bibitem{Framework2} Hung-Chin Jang and Jian-Ting Lin, SDN Based QoS Aware Bandwidth Management Framework of ISP for Smart Homes, \textit{2017 IEEE SmartWorld, Ubiquitous Intelligence \& Computing, Advanced \& Trusted Computed, Scalable Computing \& Communications, Cloud \& Big Data Computing, Internet of People and Smart City Innovation (SmartWorld/SCALCOM/UIC/ATC/CBDCom/IOP/SCI)}, pp. 1-7, 2017.
-  \bibitem{AQRA} Guo-Cin Deng and Kuochen Wang, An Application-aware QoS Routing Algorithm for SDN-based IoT Networking, \textit{2018 IEEE Symposium on Computers and Communications (ISCC)}, pp. 186-191, 2018.
+  \bibitem{AD}
+  横山俊夫, 波多野邦道, 小沢浩一郎, 樋山智, 小高賢二, 自動車業界における自動運転実用化に向けた取り組み, 学術の動向, Vol.25, No.5, pp.17-21 (2020).
+
+  \bibitem{CAD}
+  辰巳周一, 樋口竜貴, 染谷竜太, 協調型自動運転の実現に向けた最新の技術動向と課題, 電気学会誌, Vol.140, No.5, pp.308-311 (2020).
+
+  \bibitem{ITS}
+  菅沼英明, ITS・自動運転の動向と今後, 電子情報通信学会 通信ソサイエティマガジン, Vol.15, No.2, pp.102-108 (2021).
+
+  \bibitem{edge}
+  Fuhui Zhou, Rose Qingyang Hu, Zan Li, and Yuhao Wang, Mobile edge computing in unmanned aerial vehicle networks, \textit{IEEE Wireless Communications}, Vol.27, No.1, pp.140-146 (2020).
+
+  \bibitem{C-V2X}
+  Ignacio Soto, Maria Calderon, Oscar Amador and Manuel Uruena, A survey on road safety and traffic efficiency vehicular applications based on C-V2X technologies, \textit{Vehicular Communications}, Vol.33, No.100428 (2022).
+
+  \bibitem{ns-3}
+  Zoraze Ali, Sandra Lagen, Lorenza Giupponi and Richard Rouil, 3GPP NR V2X Mode 2: Overview, Models and System-Level Evaluation, \textit{IEEE Access}, Vol.9, pp.89554-89579 (2021).
+
 \end{thebibliography}
 
 % BibTex を利用する場合は以下を使用（初めての人には難しいかも）
