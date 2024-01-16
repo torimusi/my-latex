@@ -200,15 +200,15 @@
 \label{chap:関連研究}
 
   協調型自動運転では，車両が周囲の車両や路側機、サーバなどとリアルタイムで情報を共有することで，安全かつ効率的な交通システムを構築することができる．
-  車両による事故を防ぐなどのユースケースに対してV2X通信を行うため，協調型自動運転のための通信は厳しいQoSの要件が決められており，パケットロス率や通信遅延について詳細に要求されている．%参考文献
-  しかし，V2X通信では車両の高い移動性や交差点における車両の集中など，様々な要因が通信のQoSに影響を与える%参考文献．
-  QoSの急激な低下が発生した場合，協調型自動運転におけるアプリケーションの機能不全が発生し，状況によっては人間の安全を脅かす可能性がある．%参考文献
+  車両による事故を防ぐなどのユースケースに対してV2X通信を行うため，協調型自動運転のための通信は厳しいQoSの要件が決められており，パケットロス率や通信遅延について詳細に要求されている\cite{5GAA}．
+  しかし，V2X通信では車両の高い移動性や交差点における車両の集中など，様々な要因が通信のQoSに影響を与える\cite{cause}．
+  QoSの急激な低下が発生した場合，協調型自動運転におけるアプリケーションの機能不全が発生し，状況によっては人間の安全を脅かす可能性がある\cite{danger}．
   そのため，QoSの予測は重要であり，QoSの変化を予測することで事前に必要な対策を講じることができる．\par
-  Barmpounakisらは，5Gのネットワークからデータを収集・分析する機能を利用してQoSに関する指標を求め，地図情報をグリッドに分割してQoSの指標を用いてクラスタリングすることで，機械学習を用いてQoSを予測した%参考文献．
+  Barmpounakisらは，5Gのネットワークからデータを収集・分析する機能を利用してQoSに関する指標を求め，地図情報をグリッドに分割してQoSの指標を用いてクラスタリングすることで，機械学習を用いてQoSを予測した\cite{AI}．
   ネットワークシミュレータを用いた実験により，クラスタの数と予測精度のトレードオフの関係を示した．
-  また，Xuらは，Transformerの長期時系列予測モデルであるInformerモデルを利用し，V2X通信の時間的および局所的な特徴を考慮したQoS予測を行った．%参考文献
+  また，Xuらは，深層学習モデルの1つであるTransformer\cite{Transformer}の長期時系列予測モデルであるInformer\cite{Informer}を利用し，V2X通信の時間的および局所的な特徴を考慮したQoS予測を行った\cite{Informer-based}．
   実際の交通渋滞を模倣した環境でV2X通信に関するデータを収集し，パケットロス率および通信遅延について予測精度の向上を示した．\par
-  これらの研究を含めて，V2X通信のQoS予測に関する研究は機械学習を用いたものが多く見られるが，V2X通信特有の拘束条件のもとに，複数の機械学習の比較や計算効率性の向上を目指している．
+  これらの研究を含めて，V2X通信のQoS予測に関する研究は機械学習を用いたものが多く見られる，V2X通信特有の拘束条件のもとに，複数の機械学習の比較や計算効率性の向上を目指している．
   機械学習を用いた予測では過去のデータから傾向をもとに予測を行うため，例えばある道路において通勤時間帯に車両が混雑するというデータがある場合，次の日もその時間帯に道路は混雑すると予測する．
   しかし，道路工事や交通事故などにより車両の走行ルートに変更が生じた場合，道路が混雑するエリアを正しく予測できない可能性がある．
   そのため，過去のデータだけではなく，現時点での車両の走行ルートなどの情報から，近い将来のQoSを予測することが重要である．
@@ -682,10 +682,31 @@ QoS予約された通信帯域は，\ref{QoSPredictionMethod}項の$B_{saved}$�
   菅沼英明, ITS・自動運転の動向と今後, 電子情報通信学会 通信ソサイエティマガジン, Vol.15, No.2, pp.102-108 (2021).
 
   \bibitem{edge}
-  Fuhui Zhou, Rose Qingyang Hu, Zan Li, and Yuhao Wang, Mobile edge computing in unmanned aerial vehicle networks, \textit{IEEE Wireless Communications}, Vol.27, No.1, pp.140-146 (2020).
+  Fuhui Zhou, Rose Qingyang Hu, Zan Li and Yuhao Wang, Mobile edge computing in unmanned aerial vehicle networks, \textit{IEEE Wireless Communications}, Vol.27, No.1, pp.140-146 (2020).
 
   \bibitem{C-V2X}
   Ignacio Soto, Maria Calderon, Oscar Amador and Manuel Uruena, A survey on road safety and traffic efficiency vehicular applications based on C-V2X technologies, \textit{Vehicular Communications}, Vol.33, No.100428 (2022).
+
+  \bibitem{5GAA}
+  5G Automotive Association (5GAA), Proactive and Predictive: How contributes to enhanced safety and driving automation, White Paper.
+
+  \bibitem{cause}
+  Md. Noor-A-Rahim, Zilong Liu, Haeyoung Lee, G. G. Md. Nawaz Ali, Dirk Pesch and Pei Xiao, A Survey on Resource Allocation in Vehicular Networks, \textit{IEEE Transactions on Intellignet Transportation Systems}, Vol.23, No.2, pp.701-721 (2020).
+
+  \bibitem{danger}
+  Michael Taynnan Barros, Gorka Velez, Harbil Arregui, Estibaliz Loyo, Kanika Sharma, Andoni Mujika and Brendan Jennings, CogITS: cognition-enabled network management for 5G V2X communication, \textit{IET Intellignet Transport Systems}, Vol.14, No.3, pp.182-189 (2020).
+
+  \bibitem{AI}
+  Sokratis Barmpounakis, Nikolaos Maroulis, Nikolaos Koursioumpas, Apostolos Kousaridas, Angeliki Kalamari, Panagiotis Kontopoulos and Nancy Alonistioti, AI-driven, QoS prediction for V2X communications in beyond 5G systems, \textit{Computer Networks}, Vol.217, No. 109341 (2022).
+
+  \bibitem{Transformer}
+  Ashish Vaswani, Noam Shazeer, Niki Parmer, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser and Illia Polosukhin, Attention Is All You Need (2017). https://arxiv.org/abs/1706.03762
+
+  \bibitem{Informer}
+  Haoyi Zhou, Shanghang Zhang, Jieqi Peng, Shuai Zhang, Jianxin Li, Hui Xiong and Wancai Zhang, Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting, \textit{AAAI2021}, Vol.35, pp.11106-11115 (2021).
+
+  \bibitem{Informer-based}
+  Yaqi Xu, Yan Shi, Yuming Ge, Shanzhi Chen and Longxiang Wang, Informer-based QoS prediction for V2X communication: A method with verification using reality field test data, \textit{Computer Networks}, Vol.235, No.109958 (2023).
 
   \bibitem{ns-3}
   Zoraze Ali, Sandra Lagen, Lorenza Giupponi and Richard Rouil, 3GPP NR V2X Mode 2: Overview, Models and System-Level Evaluation, \textit{IEEE Access}, Vol.9, pp.89554-89579 (2021).
