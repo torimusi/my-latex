@@ -93,9 +93,9 @@
 \begin{abstract}
   %   * 概要は，論文全体を読まなくてもその研究の序論から結論までが理解できるようにするものです．本文の内容を忠実に反映させるだけでなく，研究の新規性や重要性を簡潔かつ的確に伝えられることが，より多くの読者を獲得する鍵となります．概要は，研究目的から研究方法，研究結果，そして結論に至る肝心な要素のすべてが要約されていなければならないのです．
 
-  % 車両に搭載されたセンサで認識できる範囲は限定的であるため，周囲の車両や路側機のセンサが認識した情報を通信により共有することで，交通の安全性や効率の向上を目指す協調型自動運転の研究が行われている．各車両や路側機が収集したセンサデータをサーバ上で集約し，統合した情報を車両に配信することで，車両は自車両の搭載センサでは認識できない情報を取得することができる．しかし，サーバが管轄するエリア内に，サーバまでの通信帯域で収容可能な台数以上の車両が集中した場合，通信帯域が逼迫し，通信の品質（QoS）を保証することができない事態が懸念される．本研究では，ソフトウェアを介してネットワークを一元管理するネットワーク仮想化技術を利用して，車両の集中状況を事前に想定し，QoSの予測を行う．また，車両の将来のQoSの予約を行うことで，車両のQoSを保証することを提案する．提案手法について，ネットワークシミュレーションによる評価を行い，有効性を検討する．
+  % 車両に搭載されたセンサで認識できる範囲は限定的であるため，周囲の車両や路側機のセンサが認識した情報を通信により共有することで，交通の安全性や効率の向上を目指す協調型自動運転の研究が行われている．各車両や路側機が収集したセンサデータをサーバ上で集約し，統合した情報を車両に配信することで，車両は自車両の搭載センサでは認識できない情報を取得することができる．しかし，サーバが管轄するエリア内に，サーバまでの通信帯域で収容可能な台数以上の車両が集中した場合，通信帯域が逼迫し，通信の品質（QoS）を保証することができない事態が懸念される．また，車両は事前にQoSが保証されるか判断することができない．本研究では，ソフトウェアを介してネットワークを一元管理するネットワーク仮想化技術を利用して，車両の集中状況を事前に想定し，QoSの予測を行う．また，車両の将来のQoSの予約を行うことで，車両のQoSを保証することを提案する．提案手法について，ネットワークシミュレーションによる評価を行い，通信帯域が逼迫した場合であってもQoSを予約した車両の通信遅延が増大しないことを示した．
 
-  Due to the limited sensing range of sensors installed in vehicles, research on cooperative automated driving aiming to enhance traffic safety and efficiency is being conducted by sharing information recognized by sensors on surrounding vehicles and roadside units through communication. Aggregating sensor data collected by individual vehicles and roadside units on a server, and delivering integrated information to vehicles, allows them to acquire information beyond what can be recognized by their onboard sensors. However, there is a concern that if the number of vehicles concentrated within the area managed by the server exceeds the capacity accommodated by the communication bandwidth to the server, the communication bandwidth may become congested, and it may not be possible to guarantee the quality of service (QoS) of communication. In this study, we propose the use of network virtualization technology to centrally manage the network through software, anticipating the concentration of vehicles in advance and predicting QoS. Additionally, we propose reserving future QoS for vehicles to ensure their QoS. We evaluate the proposed method through network simulation to assess its effectiveness.
+  Due to the limited range of sensors installed in vehicles, research on cooperative autonomous driving aiming at improving traffic safety and efficiency is being conducted by sharing information recognized by sensors on surrounding vehicles and roadside units through communication. By aggregating sensor data collected by each vehicle and roadside unit on a server and delivering integrated information to vehicles, they can acquire information that cannot be recognized by their onboard sensors. However, there is concern that if the number of vehicles concentrated within the area managed by the server exceeds the capacity of the communication bandwidth to the server, the communication bandwidth may become congested, and it may not be possible to guarantee the quality of service (QoS). Additionally, vehicles cannot determine in advance whether QoS will be guaranteed. In this study, we propose using network virtualization technology to centrally manage the network through software, anticipate the concentration of vehicles in advance, and predict QoS. Furthermore, we suggest ensuring vehicle QoS by making reservations for future QoS for vehicles. Through the evaluation using network simulation of the proposed method, we demonstrated that even in cases where the communication bandwidth is congested, the communication delay for vehicles with reserved QoS does not increase.
 
 \end{abstract}
 
@@ -239,7 +239,7 @@
 通信のQoSを予測・予約するにあたり，車両と基地局，サーバの通信を制御するために，本研究ではネットワーク仮想化技術を利用する．
 ネットワーク仮想化技術とは，ソフトウェアを介してネットワークを一元管理する技術である．
 ネットワーク仮想化技術では，コントローラと呼ばれる機器がネットワークの状況の把握や経路の変更・更新を行うため，状況に合わせた柔軟なネットワークの変更が可能となる．
-本研究では，\figref{fig:NV}に示すように複数のサーバとその管轄領域内の車両との通信を1台のコントローラが管理することを考える．
+本研究では，\figref{fig:NV}に示すように複数のサーバとその管轄エリア内の車両との通信を1台のコントローラが管理することを考える．
 コントローラは，サーバと接続し，QoS予測に必要な情報を車両やサーバから受け取る．
 その後、コントローラが\ref{sec:QoS予測}節で述べるQoS予測を行い，車両に対して\ref{sec:QoS予約}節で述べるQoS予約を行う．
 なお，コントローラとサーバは有線で接続されており，通信遅延やパケットロスなどの影響は極めて小さいものとする．\par
@@ -262,7 +262,7 @@
     この通信帯域で行われる通信の内容は時刻によって大きく変化するものではなく，1台あたりの通信量は大きく変化しないが，車両台数の増減に比例して通信量も変化する．
   \item [協調型自動運転のための通信帯域]\mbox{}\\
     この通信帯域は，協調型自動運転を行うため，車両が自身の走行情報や自車両に搭載されたセンサで認識した情報等をサーバに送信したり，サーバが複数の車両や路側機から収集・統合した情報を車両に送信したりする際に用いられる．
-    この通信帯域で行われる通信の通信量は，車両の運転操作や周囲の走行環境等によって変化し，その通信量はQoS予測・予約のための通信と比較して通信量が大きいため，サーバの管轄領域内に車両が集中することにより，通信帯域が逼迫する恐れがある．
+    この通信帯域で行われる通信の通信量は，車両の運転操作や周囲の走行環境等によって変化し，その通信量はQoS予測・予約のための通信と比較して通信量が大きいため，サーバの管轄エリア内に車両が集中することにより，通信帯域が逼迫する恐れがある．
     したがって，本研究ではこの通信帯域を対象としてQoSの予測・予約を行う．
   \item [常に確保しておく余剰の通信帯域]\mbox{}\\
     この通信帯域は，通信量の変動やQoS予測の誤差を吸収するために，常に一定分確保されている通信帯域である．
@@ -392,7 +392,7 @@ QoSを保証する車両の選択は，一定時刻後における車両の運�
 右折などの周囲の車両と調停を必要とする運転操作や，自車両のセンサのみでは認識できない走行環境の認識を必要とする運転操作を行なっている最中に協調型自動運転のための通信を行えないと通知された場合，突然情報が遮断されることになるため，安全性に重大な問題が生じる．
 そのため，QoSを予約する際に，コントローラは車両から受け取った走行計画から一定時刻後の運転操作を把握し，必要に応じてあらかじめそこから一定時間の通信帯域もまとめて予約しておく．
 これにより，協調型自動運転のための通信の優先度が高い運転操作は，開始前に通信のQoSが保証されると通知されれば，その運転操作が完了するまで通信のQoSは保証されることになる．
-QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$としてSDNコントローラが保持し，以降のQoS予測の際に使用可能な通信帯域から除いて計算する．
+QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$としてコントローラが保持し，以降のQoS予測の際に使用可能な通信帯域から除いて計算する．
 運転操作が完了すると，車両はそのことをコントローラに通知し，通知を受け取ったコントローラは予約していた通信帯域を解放し，使用可能な通信帯域として計算する．
 
   \begin{figure}[tb]
@@ -433,7 +433,7 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
 
   \begin{figure}[tb]
     \centering
-    \includegraphics[width=0.41\linewidth]{img/シミュレーションモデル2.pdf}
+    \includegraphics[width=0.60\linewidth]{img/シミュレーションモデル2.pdf}
     \caption{シミュレーションモデル}
     \label{fig:model}
   \end{figure}
@@ -452,38 +452,37 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
       仮想環境 & VirtualBox7.0.8\\
       OS & Ubuntu22.04\\
       シミュレータ & NS3 5g-lena NR Module\\
-      下り速度 & 100Mbps\\
+      通信速度 & 25Mbps\\
       パケットサイズ & 1000byte\\
       送信間隔 & 100ms\\
       1台あたりのQoS予測に必要な通信帯域 & 10Kbps\\
+      車両台数 & 20 \textasciitilde 60台\\
       \hline
     \end{tabular}
   \end{table}
 
-  協調型自動運転のための通信の性能を評価するため，協調型自動運転のための通信について，サーバから車両までの通信遅延およびパケットロス率を測定する．
-  QoS予測・予約を行わない場合は全ての車両に対する通信遅延およびパケットロス率の平均を求める．
-  QoS予測・予約を行う場合は，QoSが保証された車両に対する通信遅延およびパケットロス率の平均を求め，QoS予測・予約を行わない場合と比較する．
+  協調型自動運転のための通信の性能を評価するため，協調型自動運転のための通信について，サーバから車両までの通信遅延を測定する．
+  QoS予測・予約を行わない場合は全ての車両に対する通信遅延を求める．
+  QoS予測・予約を行う場合は，QoSが保証された車両に対する通信遅延の平均を求め，QoS予測・予約を行わない場合と比較する．
 
 
 \section{評価結果}
 \label{sec:評価結果}
 
-\subsection{通信遅延}
-
-  QoS予測・予約を行わなかった場合と行った場合の通信遅延の比較をに示す．
-
-
-\subsection{パケットロス率}
-
-  QoS予測・予約を行わなかった場合と行った場合のパケットロス率の比較をに示す．
-
-
-%   \begin{figure}[tb]
-%     \centering
-%     \includegraphics[width=0.85\linewidth]{img/throughput_1.pdf}
-%     \caption{優先度制御しない場合とのスループットの比較}
-%     \label{fig:throughput_1}
-%   \end{figure}
+  QoS予測・予約を行わなかった場合と行った場合の通信遅延の比較を\figref{fig:delay}に示す．
+  QoS予測・予約を行わなかった場合の通信遅延は，車両台数が20台の時が22ms，30台の時が29.8ms，40台の時が53.2ms，50台の時が94.5ms，60台の時が103.9msであった．
+  QoS予測・予約を行った場合の通信遅延は，車両台数が20台の時は21ms，30台の時は31.1ms，40台の時は54.1ms，50台の時は92.1ms，60台の時は92.1msであった．\par
+  QoS予測・予約を行わなかった場合・行った場合どちらの場合も，車両台数が増加するにつれて通信遅延も増大した．
+  車両台数が20台の時はQoS予測・予約を行わなかった場合の通信遅延がQoS予測・予約を行った場合と比較して大きくなったのに対して，車両台数が30，40台の時はQoS予測・予約を行った場合の方が通信遅延が大きくなった．
+  車両台数が50台の時はQoS予測・予約を行わなかった場合の方が通信遅延が大きくなった．
+  車両台数が60台の時，QoS予測・予約を行わなかった場合は通信遅延が協調型自動運転で許容される通信遅延である100msを超過したのに対して，QoS予測・予約を行った場合は車両台数が50台の時から通信遅延が増大せず，100msを超過しなかった．
+  
+  \begin{figure}[tb]
+    \centering
+    \includegraphics[width=\linewidth]{img/QoS予測・予約を行わない場合との通信遅延の比較.pdf}
+    \caption{QoS予測・予約を行わない場合との通信遅延の比較}
+    \label{fig:delay}
+  \end{figure}
 
 
 %   \begin{figure}[tb]
@@ -506,28 +505,17 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
 \chapter{考察}
 \label{chap:考察}
 
-  本章では，\ref{chap:評価}章で述べた結果をもとに提案手法の有効性を考察する．
-  提案手法を用いることで，優先度制御を行わない場合や固定された優先度分類を用いた場合と比較して，スループット，遅延時間，パケット損失率に与える影響を考察する．\par
-
-  まず，\ref{sec:通信性能}節の結果をもとに，優先度制御を行わない場合と比較して，提案手法の有効性を考察する．
-  \figref{fig:throughput_1}に示すように，最も優先度の高い優先度1の通信のスループットは，提案手法を用いた場合の方が優先度制御しない場合と比較して向上している．
-  しかし，優先度2\textasciitilde4の通信ではスループットが低下しており，通信全体のスループットは低下している．
-  また，\figref{fig:packetloss_1}に示すように，優先度1の通信のパケット損失率は改善してるが，優先度2\textasciitilde4の通信のパケット損失率は増加した．
-  これは，提案手法では各ポートに設定した通信量の閾値を超えた際にアドミッション制御を行うため，まだ通信帯域が逼迫しきっておらず，パケットを送信する余裕があったがパケットを破棄してしまったことが原因である．
-  一方，優先度制御を用いない場合は，通信帯域の限界のみでしかパケットの損失が発生しないため，提案手法を用いた場合と比較して通信全体のスループットとパケット損失率は高い品質を示した．
-  アドミッション制御を，通信量の閾値をもとに行うのではなく，通信帯域の逼迫率をもとに行うことで，スループットとパケット損失率の改善が可能である．\par
-
-  \figref{fig:RTT_1}に示すように，デバイスがパケットを送信してからその応答がデバイスに返ってくるまでの遅延時間は，提案手法を用いた場合が優先度制御しない場合と比較して軽減した．
-  これは，優先度制御を用いない場合では，通信帯域が逼迫した際にTCPの確認応答と再送制御が行われるため遅延時間が増加するのに対して，提案手法では通信量が閾値を超えた場合にパケットが破棄されるため，確認応答と再送制御がそもそも行われず，その分遅延時間が軽減されることが原因である．
-  通信帯域の逼迫率を監視し，パケットの到達が見込めない時はパケットを破棄することで，遅延時間を軽減することが可能である．\par
-
-  次に，\ref{sec:動的な優先度分類}節の結果をもとに，提案手法の動的な優先度分類の有効性を考察する．
-  \figref{fig:throughput_2}に示すように，提案手法を用いた場合では優先度の変更に合わせてアドミッション制御を行なったため，カテゴリ4=優先度3のスループットがカテゴリ3=優先度4のスループットよりも高くなっている．
-  一方，固定された優先度分類では，カテゴリ4=優先度3のスループットがカテゴリ3=優先度4のスループットよりも低くなっており，優先度の変化に対応できていない．
-  また，パケット損失率についても，提案手法ではカテゴリ4=優先度3のパケット損失率がカテゴリ3=優先度4のパケット損失率よりも低下しているのに対して，固定した優先度分類ではカテゴリ4=優先度3のパケット損失率がカテゴリ3=優先度4のパケット損失率より高くなっている．
-  動的な優先度分類によって，優先度の変更に対応した優先度制御を実現した．\par
-
-  
+  QoS予約の有効性について考察する．
+  車両台数が60台の時にQoS予測・予約を行うことで協調型自動運転の遅延要件を満たすことができた．
+  QoS予約・予約を行わなかった場合の通信遅延からわかるように，車両台数が60台では通信帯域が逼迫していたため，QoS予測・予約を行った場合ではQoS予約により通信を行う車両台数が制限された．
+  そのため，車両台数が50台の時と比較して通信遅延が増大しなかった．
+  QoS予測・予約を行った場合の車両台数が50，60台の時の通信遅延は92.1msであり，協調型自動運転の遅延要件に近く誤差によっては100msを超過する可能性があるが，これはQoS予測において使用可能な通信帯域を計算する際に，常に確保しておく余剰の通信帯域をより大きく確保することで100msを超過しないようQoSを保証することができる．
+  \par
+  また，QoS予測・予約のオーバヘッドについて考察する．
+  車両台数が30，40台の時はQoS予測・予約を行った方が通信遅延が1\textasciitilde2msほど大きくなった．
+  QoS予測・予約を行うために通信帯域を使用するため，全体で使用可能な通信帯域が減少し通信遅延が増大したことが原因である．
+  しかし，車両台数が20台の時はQoS予測・予約を行わなかった方が通信遅延が大きくなった．
+  1台あたりのQoS予測に必要な通信帯域は10Kbpsであり，車両台数が20台の時はQoS予測・予約の使用通信帯域の影響が小さかった可能性がある．\par
 
 %----------------------------------------------------------------------
 % おわりに
@@ -549,6 +537,8 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
   また，QoS予測の結果から，QoSを保証する車両を決定し，車両に通知することでQoSを予約した．
   使用可能な通信帯域が十分にある場合は全ての車両に対してQoSを予約し，通信帯域が十分にない場合は車両のその時刻での運転操作から通信帯域が確保されるべき優先度を考慮し，QoSを予約する車両を決定した．\par
   サーバから車両へと情報を送信する通信モデルを構築し，ネットワークシミュレーションを行うことで提案手法の有効性を検証した．
+  QoS予測・予約を行わない場合と行う場合において通信遅延を比較し，通信帯域が逼迫した場合にも通信する車両台数を制限することで，通信遅延を協調型自動運転の許容される遅延時間内に収められることを示した．
+  今後協調型自動運転の開発・研究が進み，V2X通信のデータ量が増加すると考えられる中で，QoS予測・予約を用いることで通信帯域の逼迫の発生を防ぎ，事前に車両のQoSを確保することが可能であることを示した．
 
 %----------------------------------------------------------------------
 % 謝辞
@@ -562,9 +552,9 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
 %謝辞には章番号をつけなくてもよいので，\verb|\chapter*{}| という具合に書きます．
 
   \noindent
-  本研究を進めるにあたって，多大なご指導とご支援を賜りました同志社大学理工学部の佐藤健哉教授に心より感謝いたします．
-  また，研究内容について親身にアドバイスをくださった山本浩太郎先輩をはじめとしたネットワーク情報システム研究室のみなさまには，大変お世話になりました．
-  さらに，学校生活や研究活動を支えて支えてくれた友人と家族へ感謝いたします．
+  本研究を進めるにあたって，多大なご指導とご支援を賜りました同志社大学大学院理工学研究科の佐藤健哉教授に心より感謝いたします．
+  また，研究内容について親身にアドバイスをくださったネットワーク情報システム研究室のみなさまには，大変お世話になりました．
+  さらに，大きな心の支えとなってくださった友人と家族へ感謝いたします．
 
 %----------------------------------------------------------------------
 % 付録
@@ -649,7 +639,9 @@ QoS予約された通信帯域は，\ref{QoSの予測方法}項の$B_{saved}$と
 \renewcommand{\bibname}{研究業績}
 
 \begin{thebibliography}{99}
-  \bibitem{} 国本 典晟，細野 航平，滕 睿，佐藤 健哉，"ホームネットワークにおけるデータ特性を考慮したSDNによる優先度制御手法，" 情報処理学会 第84回全国大会．2022．（発表予定）
+  \bibitem{} 国本 典晟, 佐藤 健哉, "SDNを利用したQoS予測・予約によるV2X通信のシミュレーション評価", 第109回MBL・第95回ITS合同研究発表会, 2023.
+  \bibitem{} 国本 典晟, 滕 睿, 佐藤 健哉, "SDNを利用したQoS予測・予約によるV2X通信の信頼性向上," 第20回ITSシンポジウム2022, 2022.
+  \bibitem{} 東田 悠希, 国本 典晟, 滕 睿, 佐藤 健哉, "車両走行状態とドライバ視線の時系列変化を考慮した運転支援情報提示の制御手法，" 情報処理学会 第85回全国大会, 2023．
 \end{thebibliography}
 
 \label{chap:Publications}
